@@ -1,0 +1,3 @@
+function onClickButtonLogin(){
+    alert("Login");
+}

@@ -1,0 +1,118 @@
+@font-face {
+    font-family: "Cantarell";
+
+    font-weight: 1;
+}
+
+* {
+    color: white;
+}
+
+body {
+
+    background-size: cover;
+    font-family: "Cantarell";
+    font-size: 32px;
+}
+
+h1 {
+    font-size: 64px;
+}
+
+input {
+    background: black;
+    border-color: white;
+    border-width: 1px;
+    border-radius: 10px;
+    font-size: 22px;
+    padding: 3px;
+}
+
+input[type="button"], input[type="submit"] {
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+}
+
+textarea {
+    background: black;
+    border-color: white;
+    border-width: 1px;
+    border-radius: 10px;
+    font-size: 22px;
+    padding: 3px;
+}
+
+table, th, td {
+    border: 1px solid white;
+}
+
+.main {
+    padding: 50px;
+    background-color: #000D;
+    margin: 300px;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    border-radius: 30px;
+}
+
+.horizontal-layout {
+    display: flex;
+    justify-content: space-around;
+}
+
+.vertical-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.logo {
+    width: 40vw;
+    margin-left: 30vw;
+}
+
+.titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #DDD;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 2;
+}
+
+.titlebar > * {
+    margin-left: 20px;
+    margin-right: 25px;
+    padding: 5px;
+}
+
+.titlebar * {
+    color: black;
+    font-weight: bold;
+}
+
+.titlebar > div > * {
+    margin-left: 15px;
+}
+
+.titlebar img {
+    max-height: 64px;
+}
+
+.titlebar image {
+    background: red;
+}
+
+@media only screen and (max-width: 1500px) {
+    .main {
+        margin-left: 20px;
+        margin-right: 20px;
+
+    }
+}

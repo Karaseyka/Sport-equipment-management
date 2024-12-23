@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Инвентарь</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main">
+    <div class="horizontal-layout">
+        <div class="vertical-layout">
+            <h1>Логин</h1>
+
+            <div class="vertical-layout">
+                <label for="username1">Имя пользователя:</label>
+                <input type="text" id="username1" name="username" required></input>
+                <label for="password1">Пароль:</label>
+                <input type="password" id="password1" name="password" required></input>
+                <input type="submit" value="Логин" onclick="onClickButtonLogin()">
+            </div>
+
+        </div>
+        <div class="vertical-layout">
+            <h1>Регистрация</h1>
+            <form id="registerForm">
+                <div class="vertical-layout">
+                    <label for="username2">Имя пользователя:</label>
+                    <input type="text" id="username2" name="username" required></input>
+                    <label for="password2">Пароль:</label>
+                    <input type="password" id="password2" name="password" required></input>
+                    <div>
+                        <label for="is_admin">Создать аккаунт админа</label>
+                        <input type="checkbox" id="is_admin" name="is_admin"></input>
+                    </div>
+                    <input type="submit" value="Регистрация">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
