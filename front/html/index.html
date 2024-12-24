@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация и Регистрация</title>
+    <!-- Подключение CSS Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div id="authSection">
+        <h2 class="text-center">Авторизация</h2>
+        <form id="loginForm" method="POST" action="/login">
+            <div class="form-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Введите имя пользователя" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="#" id="showRegister">Нет аккаунта? Зарегистрируйтесь!</a>
+        </div>
+    </div>
+
+    <div id="registerSection" style="display: none;">
+        <h2 class="text-center mt-4">Регистрация</h2>
+        <form id="registerForm" method="POST" action="/register">
+            <div class="form-group">
+                <label for="newUsername">Имя пользователя</label>
+                <input type="text" class="form-control" id="newUsername" name="newUsername" placeholder="Введите имя пользователя" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Пароль</label>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Введите пароль" required>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="isAdmin" name="isAdmin">
+                <label class="form-check-label" for="isAdmin">Я администратор</label>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Зарегистрироваться</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="#" id="showLogin">Уже есть аккаунт? Войдите!</a>
+        </div>
+    </div>
+</div>
+
+<!-- Подключение JS Bootstrap и jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#showRegister').click(function(e) {
+            e.preventDefault();
+            $('#authSection').hide(); // Скрываем раздел авторизации
+            $('#registerSection').show(); // Показываем раздел регистрации
+        });
+
+        $('#showLogin').click(function(e) {
+            e.preventDefault();
+            $('#registerSection').hide(); // Скрываем раздел регистрации
+            $('#authSection').show(); // Показываем раздел авторизации
+        });
+    });
+</script>
+</body>
+</html>
