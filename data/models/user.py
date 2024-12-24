@@ -12,4 +12,5 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     type = sqlalchemy.Column(sqlalchemy.String)
     password = sqlalchemy.Column(sqlalchemy.String)
     name = sqlalchemy.Column(sqlalchemy.String)
+    invent = sqlalchemy.Column(sqlalchemy.Integer)
 

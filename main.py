@@ -21,5 +21,31 @@ manager.init_app(app)
 db_ses = db_session.create_session()
 
 
+# пример запроса в БД
+# db_ses.query(User).get(user_id)
+
+# загрузка ползователя
+@manager.user_loader
+def load_user(user_id):
+    return db_ses.query(User).get(user_id)
+
+# Страница при входе на сайт
+@app.route("/", methods=["GET"])
+def welcome_page():
+    return "Для работы с сайтом требуется авторизация"
+
+
+# Регистрация пост и гет методы
+@app.route("/register", methods=["POST"])
+def register_post():
+    return "ddf"
+
+
+@app.route("/register", methods=["GET"])
+def register_get():
+    return "ddf"
+# -----------------
+
+
 if __name__ == "__main__":
     app.run(debug=True)

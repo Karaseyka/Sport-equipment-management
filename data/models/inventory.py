@@ -5,6 +5,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 from data.database.db_session import SqlAlchemyBase
 
+
 # Содержание инвентаря
 class Inventory(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'inventory'
@@ -12,3 +13,4 @@ class Inventory(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String)
     count = sqlalchemy.Column(sqlalchemy.Integer)
     state = sqlalchemy.Column(sqlalchemy.String)
+    admin = sqlalchemy.Column(sqlalchemy.Integer)
