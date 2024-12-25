@@ -9,6 +9,7 @@ from data.models.applications import Applications
 from data.models.inventory import Inventory
 from data.models.procurments import Procurements
 from requests import get
+import re
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -32,18 +33,34 @@ def load_user(user_id):
 # Страница при входе на сайт
 @app.route("/", methods=["GET"])
 def welcome_page():
+    return "типа самый важный"
     return "Для работы с сайтом требуется авторизация"
 
 
 # Регистрация пост и гет методы
-@app.route("/register", methods=["POST"])
+@app.route("/register/", methods=["POST"])
 def register_post():
-    return "ddf"
+    PASSWORD_REGEXP = r'^[A-Za-z0-9!@#$%^&*()_+=-{}\[\]|;:\'",.<>?\\\/`~]{8,}$'
+    LOGIN_REGEXP = r'^[A-Za-z0-9!@#$%^&*()_+=-{}\[\]|;:\'",.<>?\\\/`~]+$'
+
+    params = request.json
+    print(params["password"], params["login"])
+    if not (re.fullmatch(PASSWORD_REGEXP, params["password"]) and re.fullmatch(LOGIN_REGEXP, params["login"])):
+        return "", 418
+    if "is_admin" in params:
+        if "логин занят":
+            return "", 401
+        return "", 201
+    else:
+        if "логин и пароль не верные":
+            return "", 401
+        return "", 201
+    
 
 
-@app.route("/register", methods=["GET"])
+@app.route("/register/", methods=["GET"])
 def register_get():
-    return "ddf"
+    return render_template('register.html')
 # -----------------
 
 
