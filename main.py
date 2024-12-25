@@ -10,6 +10,7 @@ from data.models.inventory import Inventory
 from data.models.procurments import Procurements
 from requests import get
 import re
+from sqll import *
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
