@@ -31,6 +31,7 @@ db_ses = db_session.create_session()
 def load_user(user_id):
     return db_ses.query(User).get(user_id)
 
+
 # Страница при входе на сайт
 @app.route("/", methods=["GET"])
 def welcome_page():
@@ -45,23 +46,33 @@ def register_post():
     LOGIN_REGEXP = r'^[A-Za-z0-9!@#$%^&*()_+=-{}\[\]|;:\'",.<>?\\\/`~]+$'
 
     params = request.json
-    print(params["password"], params["login"])
+    user_list = db_ses.query(User).all()
+    user_logins = [i.name for i in user_list]
     if not (re.fullmatch(PASSWORD_REGEXP, params["password"]) and re.fullmatch(LOGIN_REGEXP, params["login"])):
         return "", 418
+
     if "is_admin" in params:
-        if "логин занят":
+        if params["login"] in user_logins:
             return "", 401
+        if params["is_admin"]:
+            db_ses.add(User(name=params["login"], password=generate_password_hash(params["password"]), type="admin"))
+        else:
+            db_ses.add(User(name=params["login"], password=generate_password_hash(params["password"]), type="user"))
+        db_ses.commit()
         return "", 201
     else:
-        if "логин и пароль не верные":
+        user = db_ses.query(User).filter_by(name=params["login"]).first()
+        if not check_password_hash(user.password, params["password"]):
             return "", 401
+        load_user(user)
         return "", 201
-    
 
 
 @app.route("/register/", methods=["GET"])
 def register_get():
     return render_template('register.html')
+
+
 # -----------------
 
 
