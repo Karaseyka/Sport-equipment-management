@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ru"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Учет школьного инвентаря</title>    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">    <style>        body {
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .inventory-list {
+            margin-top: 20px;
+        }
+        .inventory-item {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .inventory-item:hover {
+            transform: scale(1.05);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+        }
+    </style></head><body>    <div class="header">
+    <h1>Добро пожаловать, <span id="username">Иван</span>!</h1>
+    <p>Ваш инвентарь</p>    </div>    <div class="container inventory-list">
+    <h2>Доступный инвентарь</h2>
+    <div class="column">
+        {% for item in inventory %}
+                    <div class="col-md-6">
+                        <div class="inventory-item">
+                            <h5>{{ item.name }}</h5>
+                            <p>Количество предметов: {{ item.count }}</p>
+                        </div>
+                    </div>
+        {% endfor %}
+        </div>    </div>    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>   
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>  
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script></body></html>
