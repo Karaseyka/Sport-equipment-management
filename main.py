@@ -75,11 +75,12 @@ def register_get():
 
 @app.route("/profile/", methods=["GET"])
 def profile_get():
+    print(flask_login, 1)
     cur_user = flask_login.current_user
-    print(cur_user.invent)
-    items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.invent).all()
+    print(cur_user.id, 2)
+    items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
     print(items_of_inventory)
-    return render_template('polzovatel.html', cusernameur_user.name, inventory=items_of_inventory)
+    return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
 
 
 # -----------------
