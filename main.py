@@ -64,13 +64,22 @@ def register_post():
         user = db_ses.query(User).filter_by(name=params["login"]).first()
         if not check_password_hash(user.password, params["password"]):
             return "", 401
-        load_user(user)
+        login_user(user)
         return "", 201
 
 
 @app.route("/register/", methods=["GET"])
 def register_get():
     return render_template('register.html')
+
+
+@app.route("/profile/", methods=["GET"])
+def profile_get():
+    cur_user = flask_login.current_user
+    print(cur_user.invent)
+    items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.invent).all()
+    print(items_of_inventory)
+    return render_template('polzovatel.html', cusernameur_user.name, inventory=items_of_inventory)
 
 
 # -----------------
