@@ -68,7 +68,7 @@
     </div>
     <script>
     function addToInventory(userId) {
-        fetch('/add_user_to_inventory', {
+        fetch('/add_user_to_inventory/', {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify({id: userId})
