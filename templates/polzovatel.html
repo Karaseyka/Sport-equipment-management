@@ -3,111 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учет школьного инвентаря - Администратор</title>
+    <title>Учет школьного инвентаря</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    <style>        body {
+        background-color: #f8f9fa;
+    }
 
-                .header {
-            background-color: #3487e3;
-            color: white;
-            padding: 55px; /* Уменьшено значение для уменьшения высоты */
-            display: flex; /* Используем Flexbox */
-            justify-content: space-between; /* Распределяем элементы по краям */
-            align-items: center; /* Выравниваем по центру по вертикали */
-        }
+    .header {
+        background-color: #3487e3;
+        color: white;
+        padding: 40px;
+        text-align: center;
+    }
 
-        .header span {
-            color: white; /* Устанавливаем цвет текста в белый для всех span внутри header */
-        }
+    .inventory-list {
+        margin-top: 20px;
+    }
 
-        .nav-link {
-            font-size: 1.5rem; /* Увеличиваем размер текста навигации */
-            color: white; /* Делаем текст навигации белым */
-        }
+    .inventory-item {
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
 
-        .inventory-list {
-            margin-top: 20px;
-        }
+    .inventory-item:hover {
+        transform: scale(1.05);
+    }
 
-        .inventory-item {
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 10px;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #3487e3;
+        color: white;
+    }
 
-        .inventory-item:hover {
-            transform: scale(1.05);
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #3487e3;
-            color: white;
-        }
-
-        .up {
-            vertical-align: 45px;
-            font-size: 1.5rem;
-        }
+    .up {
+        vertical-align: 45px;
+    }
     </style>
 </head>
 <body>
-<div class="header h-5 p-3">
-    <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between ms-2 border-bottom">
-      <span class="fs-4">Администрирование Инвенторя</span>
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 link-secondary">Добавить пользователя</a></li>
-        <li><a href="#" class="nav-link px-2">Добавить новый инвентарь</a></li>
-        <li><a href="#" class="nav-link px-2">План закупок</a></li>
-        <li><a href="#" class="nav-link px-2">Список пользователей</a></li>
-      </ul>
-      <span class="fs-4">{{ name }}</span>
-    </header>
+<div class="header">
+    <span class="up" style="float:left">Инвентарь</span>
+<!--    <img src="/static/png-klev-club-6y0l-p- polzovatel-png-29.png">-->
+    <span class="up" style="float:right">{{ name }}</span>
+</div>
+<div class="container inventory-list"><h2 align="center">Доступное Вам</h2>
+  <div class="row">
+    <div class="col-sm-6">
+      {% for item in inventory %}
+      {% if inventory.index(item) % 2 == 0 %}
+      <div class="col-md-14">
+        <div class="inventory-item"><h5>{{ item.name }}</h5>
+          <p>Количество предметов: {{ item.count }}</p></div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-sm-6">
+      {% for item in inventory %}
+      {% if inventory.index(item) % 2 != 0 %}
+      <div class="col-md-14">
+        <div class="inventory-item"><h5>{{ item.name }}</h5>
+          <p>Количество предметов: {{ item.count }}</p></div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
   </div>
 </div>
-
-<div class="container">
-    <div class="inventory-list">
-        <h2 align="center">Управление инвентарем</h2>
-        <h2 align="center">Доступное Вам</h2>
-        <div class="row">
-            <div class="col-sm-6">
-                {% for item in inventory %}
-                {% if inventory.index(item) % 2 == 0 %}
-                <div class="col-md-14">
-                    <div class="inventory-item">
-                        <h5>{{ item.name }}</h5>
-                        <p>Количество предметов: {{ item.count }}</p>
-                    </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-sm-6">
-                {% for item in inventory %}
-                {% if inventory.index(item) % 2 != 0 %}
-                <div class="col-md-14">
-                    <div class="inventory-item"><h5>{{ item.name }}</h5>
-                        <p>Количество предметов: {{ item.count }}</p></div>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

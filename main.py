@@ -93,7 +93,7 @@ def profile_get():
 @app.route('/add_users/')
 @login_required
 def add_users():
-    users = [{'id': 1, 'name': 'User 1'}, {'id': 2, 'name': 'User 2'}, {'id': 3, 'name': 'User 3'}]
+    users = db_ses.query(User).filter_by(type="user").all()
     return render_template('add_users.html', users=users)
 
 
@@ -101,6 +101,10 @@ def add_users():
 @login_required
 def add_user_to_inventory():
     user_id = request.json.get('id')
+    goal_user = db_ses.query(User).filter_by(id=user_id).first()
+    goal_user.invent = flask_login.current_user.id
+    db_ses.add(goal_user)
+    db_ses.commit()
     return "", 201
 
 
