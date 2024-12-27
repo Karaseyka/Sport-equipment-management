@@ -84,6 +84,18 @@ def profile_get():
     return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
 
 
+@app.route('/add_users/')
+def add_users():
+    users = [{'id': 1, 'name': 'User 1'}, {'id': 2, 'name': 'User 2'}, {'id': 3, 'name': 'User 3'}]
+    return render_template('add_users.html', users=users)
+
+
+@app.route('/add_user_to_inventory/', methods=['POST'])
+def add_user_to_inventory():
+    user_id = request.json.get('id')
+    return "", 201
+
+
 # -----------------
 
 
