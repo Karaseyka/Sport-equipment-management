@@ -55,10 +55,14 @@ def register_post():
         if params["login"] in user_logins:
             return "", 401
         if params["is_admin"]:
-            db_ses.add(User(name=params["login"], password=generate_password_hash(params["password"]), type="admin"))
+            user = User(name=params["login"], password=generate_password_hash(params["password"]), type="admin")
+
         else:
-            db_ses.add(User(name=params["login"], password=generate_password_hash(params["password"]), type="user"))
+            user = User(name=params["login"], password=generate_password_hash(params["password"]), type="user")
+        db_ses.add(user)
         db_ses.commit()
+        login_user(user)
+
         return "", 201
     else:
         user = db_ses.query(User).filter_by(name=params["login"]).first()
@@ -75,11 +79,8 @@ def register_get():
 
 @app.route("/profile/", methods=["GET"])
 def profile_get():
-    print(flask_login, 1)
     cur_user = flask_login.current_user
-    print(cur_user.id, 2)
     items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
-    print(items_of_inventory)
     return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
 
 
