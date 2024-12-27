@@ -62,14 +62,14 @@ def register_post():
         db_ses.add(user)
         db_ses.commit()
         login_user(user)
-
-        return "", 201
+        return "/profile/", 201
     else:
         user = db_ses.query(User).filter_by(name=params["login"]).first()
-        if not check_password_hash(user.password, params["password"]):
+        print(user)
+        if not user or not check_password_hash(user.password, params["password"]):
             return "", 401
         login_user(user)
-        return "", 201
+        return "/profile/", 201
 
 
 @app.route("/register/", methods=["GET"])
@@ -78,19 +78,27 @@ def register_get():
 
 
 @app.route("/profile/", methods=["GET"])
+@login_required
 def profile_get():
     cur_user = flask_login.current_user
-    items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
-    return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
+    if cur_user.type == "user":
+        items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
+        return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
+    else:
+        items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
+        return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
+
 
 
 @app.route('/add_users/')
+@login_required
 def add_users():
     users = [{'id': 1, 'name': 'User 1'}, {'id': 2, 'name': 'User 2'}, {'id': 3, 'name': 'User 3'}]
     return render_template('add_users.html', users=users)
 
 
 @app.route('/add_user_to_inventory/', methods=['POST'])
+@login_required
 def add_user_to_inventory():
     user_id = request.json.get('id')
     return "", 201

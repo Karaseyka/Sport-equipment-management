@@ -113,7 +113,7 @@
                             password: password
                         })
                     }).then(async function(response){
-                        if (response.status == 201) window.location.href = '/profile/';
+                        if (response.status == 201) window.location.href = await response.text();
                         else if (response.status == 401) alert("Неверный логин или пароль");
                         else alert("Код ответа" + " " + String(response.status) + " " + response.statusText);
                     });
@@ -141,7 +141,7 @@
                             is_admin: is_admin
                         })
                     }).then(async function(response){
-                        if (response.status == 201) window.location.href = '/profile/';
+                        if (response.status == 201) window.location.href = await response.text();
                         else if (response.status == 401) alert("Имя пользователя занято");
                         else alert("Код ответа" + " " + String(response.status) + " " + response.statusText);
                     });
