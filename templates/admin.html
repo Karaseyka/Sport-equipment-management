@@ -96,6 +96,27 @@
 <div class="container">
     <div class="inventory-list">
         <h2 align="center">Управление инвентарем</h2>
+        <table align="center">
+     <tr>
+          <form method="POST" action="/profile/">
+         <td><h3 align="center">Название</h3></td>
+         <td><h3 align="center">Количество</h3></td>
+         <td><h3 align="center">Состояние</h3></td>
+          </form>
+    </tr>
+    <tr>
+        <form method="GET" action="/profile/">
+            <td><input type="text" name="name_item"/></td>
+            <td><input type="number" name="quantity" /></td>
+            <td><select id="condition" name="condition">
+                <option value="good">В отличном состоянии</option>
+                <option value="bad">Неисправен</option>
+                <option value="out">Не в наличии</option>
+            </select></td>
+            <td><button type="submit">Подтвердить</button></td>
+        </form>
+    </tr>
+        </table>
         <h2 align="center">Доступное Вам</h2>
         <div class="row">
             <div class="col-sm-6">
