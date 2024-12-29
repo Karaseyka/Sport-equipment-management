@@ -86,6 +86,10 @@ def profile_get():
         return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
     else:
         items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
+        name = request.args.get('name_item')
+        quantity = request.args.get('quantity')
+        condition = request.args.get('condition')
+        add_item(name, quantity, condition)
         return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
 
 
