@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Учет школьного инвентаря - Администратор</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -75,37 +78,36 @@
 <!--    </header>-->
 <!--  </div>-->
 <!--</div>-->
-<nav class=" navbar navbar-expand-md navbar-dark bg-primary mb-4" >
+<nav class=" navbar navbar-expand-md navbar-dark bg-primary mb-4">
     <div class="container-fluid">
-    <a class="navbar-brand">Ваш инвентарь</a>
+        <a class="navbar-brand">Ваш инвентарь</a>
 
-    <div class="collapse navbar-collapse " id="navbarColor02">
-        <ul class="navbar-nav ">
-            <li class="nav-item"><a href="/add_users/" class="nav-link active">Добавить пользователя</a></li>
-            <li class="nav-item"><a href="#" class="nav-link active">Добавить новый предмет</a></li>
-            <li class="nav-item"><a href="#" class="nav-link active">План закупок</a></li>
-            <li class="nav-item"><a href="#" class="nav-link active">Список пользоваелей инвентаря</a></li>
-        </ul>
-        <a class="nav-link active">
+        <div class="collapse navbar-collapse " id="navbarColor02">
+            <ul class="navbar-nav ">
+                <li class="nav-item"><a href="/add_users/" class="nav-link active">Добавить пользователя</a></li>
+
+                <li class="nav-item"><a href="#" class="nav-link active">План закупок</a></li>
+                <li class="nav-item"><a href="#" class="nav-link active">Список пользоваелей инвентаря</a></li>
+            </ul>
+        </div>
+        <span class="nav-link active">
         {{name}}
-      </a>
-    </div>
+      </span>
     </div>
 </nav>
-
 <div class="container">
     <div class="inventory-list">
         <h2 align="center">Управление инвентарем</h2>
         <table align="center">
      <tr>
-          <form method="POST" action="/profile/">
+
          <td><h3 align="center">Название</h3></td>
          <td><h3 align="center">Количество</h3></td>
          <td><h3 align="center">Состояние</h3></td>
-          </form>
+
     </tr>
     <tr>
-        <form method="GET" action="/profile/">
+        <form method="POST">
             <td><input type="text" name="name_item"/></td>
             <td><input type="number" name="quantity" /></td>
             <td><select id="condition" name="condition">
@@ -117,7 +119,25 @@
         </form>
     </tr>
         </table>
-        <h2 align="center">Доступное Вам</h2>
+<!--        <h3> Добавить предмет в инвентарь</h3>-->
+<!--        <div class="row">-->
+<!--            <div class="col">-->
+<!--                <input class="form-control" type="text" placeholder="Введите название элемента"-->
+<!--                       aria-label="deafult input example">-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <input class="form-control" type="number" placeholder="Введите кол-во единиц предмета"-->
+<!--                       aria-label="deafult input example">-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <button type="submit" class="btn btn-outline-success">Добавить</button>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <select-->
+<!--            </div>-->
+
+        </div>
+        <h3>Ваш инвентарь</h3>
         <div class="row">
             <div class="col-sm-6">
                 {% for item in inventory %}
@@ -126,6 +146,11 @@
                     <div class="inventory-item">
                         <h5>{{ item.name }}</h5>
                         <p>Количество предметов: {{ item.count }}</p>
+                        <select id="conditionItem" name="conditionItem">
+                            <option {% if item.state == "good" %} selected {% endif %} value="good" >В отличном состоянии</option>
+                            <option {% if item.state == "bad" %} selected {% endif %} value="bad">Неисправен</option>
+                            <option {% if item.state == "out" %} selected {% endif %} value="out">Не в наличии</option>
+                        </select>
                     </div>
                 </div>
                 {% endif %}
@@ -135,8 +160,16 @@
                 {% for item in inventory %}
                 {% if inventory.index(item) % 2 != 0 %}
                 <div class="col-md-14">
-                    <div class="inventory-item"><h5>{{ item.name }}</h5>
-                        <p>Количество предметов: {{ item.count }}</p></div>
+                    <div class="inventory-item">
+                        <h5>{{ item.name }}</h5>
+                        <p>Количество предметов: {{ item.count }}</p>
+                        <select id="conditionItem" name="conditionItem">
+                            <option {% if item.state == "good" %} selected {% endif %} value="good" >В отличном состоянии</option>
+                            <option {% if item.state == "bad" %} selected {% endif %} value="bad">Неисправен</option>
+                            <option {% if item.state == "out" %} selected {% endif %} value="out">Не в наличии</option>
+                        </select>
+                    </div>
+
                 </div>
                 {% endif %}
                 {% endfor %}
@@ -144,8 +177,11 @@
         </div>
     </div>
 </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
 </body>
 </html>

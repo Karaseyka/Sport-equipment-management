@@ -85,19 +85,31 @@ def profile_get():
         items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
         return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
     else:
-        items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
-        name = request.args.get('name_item')
-        quantity = request.args.get('quantity')
-        condition = request.args.get('condition')
-        add_item(name, quantity, condition)
+
+        items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
+
         return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
+
+@app.route("/profile/", methods=["POST"])
+@login_required
+def profile_post():
+    cur_user = flask_login.current_user
+    if cur_user.type == "admin":
+        name = request.form['name_item']
+        quantity = request.form['quantity']
+        condition = request.form['condition']
+        db_ses.add(Inventory(name=name, count=quantity, state=condition, admin=cur_user.id))
+        db_ses.commit()
+        items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
+        return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
+    return render_template("polzovatel.html")
 
 
 
 @app.route('/add_users/')
 @login_required
 def add_users():
-    users = db_ses.query(User).filter_by(type="user").all()
+    users = db_ses.query(User).filter_by(type="user", invent=None).all()
     return render_template('add_users.html', users=users)
 
 

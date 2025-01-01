@@ -22,12 +22,12 @@ def add_procurements(name, count, status):
     return True
 
 
-def add_item(name, count, state):
+def add_item(name, count, state, admin):
     con = sqlite3.connect("data/instance/sportequip.db")
     cur = con.cursor()
-    cur.execute("""INSERT INTO inventory (name, count, state)
-                        VALUES (?, ?, ?)
-                    """, (name, count, state,))
+    cur.execute("""INSERT INTO inventory (name, count, state, admin)
+                        VALUES (?, ?, ?, ?)
+                    """, (name, count, state, admin,))
     con.commit()
     return True
 
