@@ -82,7 +82,7 @@ def register_get():
 def profile_get():
     cur_user = flask_login.current_user
     if cur_user.type == "user":
-        items_of_inventory = db_ses.query(Inventory).filter_by(id=cur_user.id).all()
+        items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.invent).all()
         return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
     else:
 
@@ -94,6 +94,7 @@ def profile_get():
 @login_required
 def profile_post():
     cur_user = flask_login.current_user
+
     if cur_user.type == "admin":
         name = request.form['name_item']
         quantity = request.form['quantity']
@@ -101,7 +102,8 @@ def profile_post():
         db_ses.add(Inventory(name=name, count=quantity, state=condition, admin=cur_user.id))
         db_ses.commit()
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
-        return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
+        return redirect("/profile/")
+        
     return render_template("polzovatel.html")
 
 
@@ -123,6 +125,22 @@ def add_user_to_inventory():
     db_ses.commit()
     return "", 201
 
+@app.route('/update-item/', methods=['POST'])
+@login_required
+def update_item():
+    data = request.json
+    item_id = data['id']
+    name = data['name']
+    count = data['count']
+    state = data['state']
+    invent_item = db_ses.query(Inventory).get(item_id)
+    if invent_item:
+        invent_item.name = name
+        invent_item.count = count
+        invent_item.state = state
+        db_ses.commit()
+
+    return render_template('admin.html')
 
 # -----------------
 
