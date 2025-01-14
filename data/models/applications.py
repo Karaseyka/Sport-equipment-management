@@ -12,4 +12,5 @@ class Applications(SqlAlchemyBase, UserMixin, SerializerMixin):
     description = sqlalchemy.Column(sqlalchemy.String)
     count = sqlalchemy.Column(sqlalchemy.Integer)
     user = sqlalchemy.Column(sqlalchemy.Integer)
+    inventId = sqlalchemy.Column(sqlalchemy.Integer)
     status = sqlalchemy.Column(sqlalchemy.String)
