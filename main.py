@@ -8,6 +8,7 @@ from data.models.user import User
 from data.models.applications import Applications
 from data.models.inventory import Inventory
 from data.models.procurments import Procurements
+from data.models.applications import Applications
 from requests import get
 import re
 from sqll import *
@@ -83,7 +84,8 @@ def profile_get():
     cur_user = flask_login.current_user
     if cur_user.type == "user":
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.invent).all()
-        return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory)
+        return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory,
+                               id=cur_user.id)
     else:
 
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
@@ -103,6 +105,11 @@ def profile_post():
         db_ses.commit()
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
         return redirect("/profile/")
+
+     else:
+        name_item = request.form['ItemName']
+        db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=name_item))
+        db_ses.commit()
         
     return render_template("polzovatel.html")
 
@@ -111,8 +118,23 @@ def profile_post():
 @app.route('/add_users/')
 @login_required
 def add_users():
+    cur_user = flask_login.current_user
     users = db_ses.query(User).filter_by(type="user", invent=None).all()
-    return render_template('add_users.html', users=users)
+    return render_template('add_users.html', users=users, name=cur_user.name)
+
+
+@app.route('/plan_admin/')
+@login_required
+def plan_admin():
+    cur_user = flask_login.current_user
+    return render_template('plan_admin.html', name=cur_user.name)
+
+
+@app.route('/list_admin/')
+@login_required
+def list_admin():
+    cur_user = flask_login.current_user
+    return render_template('list_admin.html', name=cur_user.name)
 
 
 @app.route('/add_user_to_inventory/', methods=['POST'])
