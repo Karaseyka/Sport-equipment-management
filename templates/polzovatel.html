@@ -63,7 +63,9 @@
                         <div class="inventory-item">
                             <h5>{{ item.name }}</h5>
                             <p>Количество предметов: {{ item.count }}</p>
-                            <button class="btn btn-primary">Взять напрокат</button>
+                           <form action="" method="post">
+                                    <button class="btn btn-primary" name="ItemName" value="{{ item.name }}">Взять напрокат</button>
+                            </form>
                         </div>
                     </div>
                 {% endif %}
@@ -76,7 +78,9 @@
                         <div class="inventory-item">
                             <h5>{{ item.name }}</h5>
                             <p>Количество предметов: {{ item.count }}</p>
-                            <button class="btn btn-primary">Взять напрокат</button>
+                           <form action="" method="post">
+                                    <button class="btn btn-primary" name="ItemName" value="{{ item.name }}">Взять напрокат</button>
+                            </form>
                         </div>
                     </div>
                 {% endif %}
