@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Учет школьного инвентаря - Администратор</title>
@@ -16,19 +15,19 @@
                 .header {
             background-color: #3487e3;
             color: white;
-            padding: 55px; /* Уменьшено значение для уменьшения высоты */
-            display: flex; /* Используем Flexbox */
-            justify-content: space-between; /* Распределяем элементы по краям */
-            align-items: center; /* Выравниваем по центру по вертикали */
+            padding: 55px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header span {
-            color: white; /* Устанавливаем цвет текста в белый для всех span внутри header */
+            color: white;
         }
 
         .nav-link {
-            font-size: 1.5rem; /* Увеличиваем размер текста навигации */
-            color: white; /* Делаем текст навигации белым */
+            font-size: 1.5rem;
+            color: white;
         }
 
         .inventory-list {
@@ -66,20 +65,6 @@
     </style>
 </head>
 <body>
-<!--<div class="header h-5 p-3">-->
-<!--    <div class="container">-->
-<!--    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between ms-2 border-bottom">-->
-<!--      <span class="navbar-brand">Ваш инвентарь</span>-->
-<!--      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">-->
-<!--        <li><a href="/add_users/" class="nav-link px-2 link-secondary">Добавить пользователя</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">Добавить новый инвентарь</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">План закупок</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">Список пользователей</a></li>-->
-<!--      </ul>-->
-<!--      <span class="fs-4">{{ name }}</span>-->
-<!--    </header>-->
-<!--  </div>-->
-<!--</div>-->
 <nav class=" navbar navbar-expand-md navbar-dark bg-primary mb-4">
     <div class="container-fluid">
         <a class="navbar-brand">Ваш инвентарь</a>
@@ -123,23 +108,6 @@
                 </form>
             </tr>
         </table>
-        <!--        <h3> Добавить предмет в инвентарь</h3>-->
-        <!--        <div class="row">-->
-        <!--            <div class="col">-->
-        <!--                <input class="form-control" type="text" placeholder="Введите название элемента"-->
-        <!--                       aria-label="deafult input example">-->
-        <!--            </div>-->
-        <!--            <div class="col">-->
-        <!--                <input class="form-control" type="number" placeholder="Введите кол-во единиц предмета"-->
-        <!--                       aria-label="deafult input example">-->
-        <!--            </div>-->
-        <!--            <div class="col">-->
-        <!--                <button type="submit" class="btn btn-outline-success">Добавить</button>-->
-        <!--            </div>-->
-        <!--            <div class="col">-->
-        <!--                <select-->
-        <!--            </div>-->
-
     </div>
     <h3>Ваш инвентарь</h3>
     <div class="row">
@@ -162,12 +130,8 @@
         <option value="bad" {% if item.state == "bad" %} selected {% endif %}>Неисправен</option>
         <option value="out" {% if item.state == "out" %} selected {% endif %}>Не в наличии</option>
     </select>
-
-    <!-- Одна динамическая кнопка -->
     <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
 </div>
-
-
             </div>
             {% endif %}
             {% endfor %}
@@ -192,12 +156,8 @@
         <option value="out" {% if item.state == "out" %} selected {% endif %}>Не в наличии</option>
     </select>
 
-    <!-- Одна динамическая кнопка -->
     <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
 </div>
-
-
-
             </div>
             {% endif %}
             {% endfor %}
@@ -216,14 +176,12 @@
         const isEditing = button.dataset.editing === "true";
 
         if (isEditing) {
-            // Сохранение изменений
             saveChanges(id);
             button.textContent = "Изменить";
             button.classList.remove("btn-success");
             button.classList.add("btn-primary");
             button.dataset.editing = "false";
         } else {
-            // Переход в режим редактирования
             enableEditMode(id);
             button.textContent = "Сохранить";
             button.classList.remove("btn-primary");
@@ -262,12 +220,11 @@
         document.getElementById(`editItemCount${id}`).classList.add('d-none');
         document.getElementById(`editItemState${id}`).classList.add('d-none');
 
-        // Отправка данных на сервер
         fetch('/update-item/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken() // Если требуется CSRF-токен
+                'X-CSRFToken': getCSRFToken()
             },
             body: JSON.stringify({
                 id: id,
@@ -281,7 +238,6 @@
                 throw new Error('Ошибка при сохранении данных на сервере.');
             }
             console.log(response);
-<!--            return response.json();-->
         })
         .then(data => {
             console.log('Данные успешно обновлены:', data);
