@@ -61,6 +61,8 @@
             vertical-align: 45px;
             font-size: 1.5rem;
         }
+
+
     </style>
 </head>
 <body>
@@ -99,83 +101,109 @@
     <div class="inventory-list">
         <h2 align="center">Управление инвентарем</h2>
         <table align="center">
-     <tr>
+            <tr>
 
-         <td><h3 align="center">Название</h3></td>
-         <td><h3 align="center">Количество</h3></td>
-         <td><h3 align="center">Состояние</h3></td>
+                <td><h3 align="center">Название</h3></td>
+                <td><h3 align="center">Количество</h3></td>
+                <td><h3 align="center">Состояние</h3></td>
 
-    </tr>
-    <tr>
-        <form method="POST">
-            <td><input type="text" name="name_item"/></td>
-            <td><input type="number" name="quantity" /></td>
-            <td><select id="condition" name="condition">
-                <option value="good">В отличном состоянии</option>
-                <option value="bad">Неисправен</option>
-                <option value="out">Не в наличии</option>
-            </select></td>
-            <td><button type="submit">Подтвердить</button></td>
-        </form>
-    </tr>
+            </tr>
+            <tr>
+                <form method="POST">
+                    <td><input type="text" name="name_item"/></td>
+                    <td><input type="number" name="quantity"/></td>
+                    <td><select id="condition" name="condition">
+                        <option value="good">В отличном состоянии</option>
+                        <option value="bad">Неисправен</option>
+                        <option value="out">Не в наличии</option>
+                    </select></td>
+                    <td>
+                        <button type="submit">Подтвердить</button>
+                    </td>
+                </form>
+            </tr>
         </table>
-<!--        <h3> Добавить предмет в инвентарь</h3>-->
-<!--        <div class="row">-->
-<!--            <div class="col">-->
-<!--                <input class="form-control" type="text" placeholder="Введите название элемента"-->
-<!--                       aria-label="deafult input example">-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <input class="form-control" type="number" placeholder="Введите кол-во единиц предмета"-->
-<!--                       aria-label="deafult input example">-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <button type="submit" class="btn btn-outline-success">Добавить</button>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <select-->
-<!--            </div>-->
+        <!--        <h3> Добавить предмет в инвентарь</h3>-->
+        <!--        <div class="row">-->
+        <!--            <div class="col">-->
+        <!--                <input class="form-control" type="text" placeholder="Введите название элемента"-->
+        <!--                       aria-label="deafult input example">-->
+        <!--            </div>-->
+        <!--            <div class="col">-->
+        <!--                <input class="form-control" type="number" placeholder="Введите кол-во единиц предмета"-->
+        <!--                       aria-label="deafult input example">-->
+        <!--            </div>-->
+        <!--            <div class="col">-->
+        <!--                <button type="submit" class="btn btn-outline-success">Добавить</button>-->
+        <!--            </div>-->
+        <!--            <div class="col">-->
+        <!--                <select-->
+        <!--            </div>-->
 
+    </div>
+    <h3>Ваш инвентарь</h3>
+    <div class="row">
+        <div class="col-sm-6">
+            {% for item in inventory %}
+            {% if inventory.index(item) % 2 == 0 %}
+            <div class="col-md-14">
+               <div class="inventory-item">
+    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
+    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
+
+    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
+    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none" value="{{ item.count }}"/>
+
+    <p>Состояние: <span id="itemState{{ item.id }}">
+        {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
+    </span></p>
+    <select id="editItemState{{ item.id }}" class="form-select d-none">
+        <option value="good" {% if item.state == "good" %} selected {% endif %}>В отличном состоянии</option>
+        <option value="bad" {% if item.state == "bad" %} selected {% endif %}>Неисправен</option>
+        <option value="out" {% if item.state == "out" %} selected {% endif %}>Не в наличии</option>
+    </select>
+
+    <!-- Одна динамическая кнопка -->
+    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
+</div>
+
+
+            </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        <h3>Ваш инвентарь</h3>
-        <div class="row">
-            <div class="col-sm-6">
-                {% for item in inventory %}
-                {% if inventory.index(item) % 2 == 0 %}
-                <div class="col-md-14">
-                    <div class="inventory-item">
-                        <h5>{{ item.name }}</h5>
-                        <p>Количество предметов: {{ item.count }}</p>
-                        <select id="conditionItem" name="conditionItem">
-                            <option {% if item.state == "good" %} selected {% endif %} value="good" >В отличном состоянии</option>
-                            <option {% if item.state == "bad" %} selected {% endif %} value="bad">Неисправен</option>
-                            <option {% if item.state == "out" %} selected {% endif %} value="out">Не в наличии</option>
-                        </select>
-                    </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-sm-6">
-                {% for item in inventory %}
-                {% if inventory.index(item) % 2 != 0 %}
-                <div class="col-md-14">
-                    <div class="inventory-item">
-                        <h5>{{ item.name }}</h5>
-                        <p>Количество предметов: {{ item.count }}</p>
-                        <select id="conditionItem" name="conditionItem">
-                            <option {% if item.state == "good" %} selected {% endif %} value="good" >В отличном состоянии</option>
-                            <option {% if item.state == "bad" %} selected {% endif %} value="bad">Неисправен</option>
-                            <option {% if item.state == "out" %} selected {% endif %} value="out">Не в наличии</option>
-                        </select>
-                    </div>
+        <div class="col-sm-6">
+            {% for item in inventory %}
+            {% if inventory.index(item) % 2 != 0 %}
+            <div class="col-md-14">
+              <div class="inventory-item">
+    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
+    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
 
-                </div>
-                {% endif %}
-                {% endfor %}
+    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
+    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none" value="{{ item.count }}"/>
+
+    <p>Состояние: <span id="itemState{{ item.id }}">
+        {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
+    </span></p>
+    <select id="editItemState{{ item.id }}" class="form-select d-none">
+        <option value="good" {% if item.state == "good" %} selected {% endif %}>В отличном состоянии</option>
+        <option value="bad" {% if item.state == "bad" %} selected {% endif %}>Неисправен</option>
+        <option value="out" {% if item.state == "out" %} selected {% endif %}>Не в наличии</option>
+    </select>
+
+    <!-- Одна динамическая кнопка -->
+    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
+</div>
+
+
+
             </div>
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
@@ -183,5 +211,60 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
+<script>
+    function toggleEditMode(id, button) {
+    const isEditing = button.dataset.editing === "true";
+
+    if (isEditing) {
+        // Сохранение изменений
+        saveChanges(id);
+        button.textContent = "Изменить";
+        button.classList.remove("btn-success");
+        button.classList.add("btn-primary");
+        button.dataset.editing = "false";
+    } else {
+        // Переход в режим редактирования
+        enableEditMode(id);
+        button.textContent = "Сохранить";
+        button.classList.remove("btn-primary");
+        button.classList.add("btn-success");
+        button.dataset.editing = "true";
+    }
+}
+
+function enableEditMode(id) {
+    document.getElementById(`itemName${id}`).classList.add('d-none');
+    document.getElementById(`itemCount${id}`).classList.add('d-none');
+    document.getElementById(`itemState${id}`).classList.add('d-none');
+
+    document.getElementById(`editItemName${id}`).classList.remove('d-none');
+    document.getElementById(`editItemCount${id}`).classList.remove('d-none');
+    document.getElementById(`editItemState${id}`).classList.remove('d-none');
+}
+
+function saveChanges(id) {
+    const newName = document.getElementById(`editItemName${id}`).value;
+    const newCount = document.getElementById(`editItemCount${id}`).value;
+    const newState = document.getElementById(`editItemState${id}`).value;
+
+    // Обновление данных на клиенте
+    document.getElementById(`itemName${id}`).textContent = newName;
+    document.getElementById(`itemCount${id}`).textContent = newCount;
+    document.getElementById(`itemState${id}`).textContent =
+        newState === "good" ? "В отличном состоянии" :
+        newState === "bad" ? "Неисправен" : "Не в наличии";
+
+    document.getElementById(`itemName${id}`).classList.remove('d-none');
+    document.getElementById(`itemCount${id}`).classList.remove('d-none');
+    document.getElementById(`itemState${id}`).classList.remove('d-none');
+
+    document.getElementById(`editItemName${id}`).classList.add('d-none');
+    document.getElementById(`editItemCount${id}`).classList.add('d-none');
+    document.getElementById(`editItemState${id}`).classList.add('d-none');
+}
+
+
+</script>
+
 </body>
 </html>
