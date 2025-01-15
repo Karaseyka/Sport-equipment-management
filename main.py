@@ -36,7 +36,6 @@ def load_user(user_id):
 # Страница при входе на сайт
 @app.route("/", methods=["GET"])
 def welcome_page():
-    return "типа самый важный"
     return "Для работы с сайтом требуется авторизация"
 
 
@@ -103,15 +102,14 @@ def profile_post():
         condition = request.form['condition']
         db_ses.add(Inventory(name=name, count=quantity, state=condition, admin=cur_user.id))
         db_ses.commit()
-        items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
-        return redirect("/profile/")
+
 
     else:
         name_item = request.form['ItemName']
         db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=name_item))
         db_ses.commit()
         
-    return render_template("polzovatel.html")
+    return redirect("/profile/")
 
 
 
@@ -133,6 +131,12 @@ def plan_admin():
 @app.route('/list_admin/')
 @login_required
 def list_admin():
+    cur_user = flask_login.current_user
+    return render_template('list_admin.html', name=cur_user.name)
+
+@app.route('/application_list/')
+@login_required
+def application_list_admin():
     cur_user = flask_login.current_user
     return render_template('list_admin.html', name=cur_user.name)
 
