@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Учет школьного инвентаря - Администратор</title>
@@ -12,29 +11,24 @@
         body {
             background-color: #f8f9fa;
         }
-
-                .header {
+        .header {
             background-color: #3487e3;
             color: white;
-            padding: 55px; /* Уменьшено значение для уменьшения высоты */
-            display: flex; /* Используем Flexbox */
-            justify-content: space-between; /* Распределяем элементы по краям */
-            align-items: center; /* Выравниваем по центру по вертикали */
+            padding: 55px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
         .header span {
-            color: white; /* Устанавливаем цвет текста в белый для всех span внутри header */
+            color: white;
         }
-
         .nav-link {
-            font-size: 1.5rem; /* Увеличиваем размер текста навигации */
-            color: white; /* Делаем текст навигации белым */
+            font-size: 1.5rem;
+            color: white;
         }
-
         .inventory-list {
             margin-top: 20px;
         }
-
         .inventory-item {
             background-color: #e9ecef;
             border: 1px solid #ced4da;
@@ -44,11 +38,9 @@
             transition: transform 0.2s;
             cursor: pointer;
         }
-
         .inventory-item:hover {
             transform: scale(1.05);
         }
-
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -56,37 +48,21 @@
             background-color: #3487e3;
             color: white;
         }
-
         .up {
             vertical-align: 45px;
             font-size: 1.5rem;
         }
-
-
     </style>
 </head>
 <body>
-<!--<div class="header h-5 p-3">-->
-<!--    <div class="container">-->
-<!--    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between ms-2 border-bottom">-->
-<!--      <span class="navbar-brand">Ваш инвентарь</span>-->
-<!--      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">-->
-<!--        <li><a href="/add_users/" class="nav-link px-2 link-secondary">Добавить пользователя</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">Добавить новый инвентарь</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">План закупок</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">Список пользователей</a></li>-->
-<!--      </ul>-->
-<!--      <span class="fs-4">{{ name }}</span>-->
-<!--    </header>-->
-<!--  </div>-->
-<!--</div>-->
 <nav class=" navbar navbar-expand-md navbar-dark bg-primary mb-4">
     <div class="container-fluid">
-        <a class="navbar-brand">Ваш инвентарь</a>
+        <a class="navbar-brand">Список закупок</a>
 
         <div class="collapse navbar-collapse " id="navbarColor02">
             <ul class="navbar-nav ">
-                <li class="nav-item"><a href="#" class="nav-link active">Добавить пользователя</a></li>
+                <li class="nav-item"><a href="/add_users/" class="nav-link active">Добавить пользователя</a></li>
+
                 <li class="nav-item"><a href="#" class="nav-link active">План закупок</a></li>
                 <li class="nav-item"><a href="#" class="nav-link active">Список пользоваелей инвентаря</a></li>
             </ul>
@@ -96,5 +72,125 @@
       </span>
     </div>
 </nav>
+<div class="container">
+    <div class="inventory-list">
+        <h2 align="center">Управление закупками</h2>
+        <table align="center">
+            <tr>
+                <td><h3 align="center">Название</h3></td>
+                <td><h3 align="center">Количество</h3></td>
+            </tr>
+            <tr>
+                <form method="POST">
+                    <td><input type="text" name="name_item"/></td>
+                    <td><input type="number" name="quantity"/></td>
+                    <td>
+                        <button type="submit">Подтвердить</button>
+                    </td>
+                </form>
+            </tr>
+        </table>
+    </div>
+    <h3>Ваш инвентарь</h3>
+    <div class="col-sm-12">
+        {% for item in inventory %}
+        <div class="col-md-28">
+            <div class="inventory-item">
+                <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
+                <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
+                <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
+                <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none" value="{{ item.count }}"/>
+                <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+<script>
+    function toggleEditMode(id, button) {
+        const isEditing = button.dataset.editing === "true";
+
+        if (isEditing) {
+            saveChanges(id);
+            button.textContent = "Изменить";
+            button.classList.remove("btn-success");
+            button.classList.add("btn-primary");
+            button.dataset.editing = "false";
+        } else {
+            enableEditMode(id);
+            button.textContent = "Сохранить";
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-success");
+            button.dataset.editing = "true";
+        }
+    }
+
+    function enableEditMode(id) {
+        document.getElementById(`itemName${id}`).classList.add('d-none');
+        document.getElementById(`itemCount${id}`).classList.add('d-none');
+        document.getElementById(`itemState${id}`).classList.add('d-none');
+
+        document.getElementById(`editItemName${id}`).classList.remove('d-none');
+        document.getElementById(`editItemCount${id}`).classList.remove('d-none');
+        document.getElementById(`editItemState${id}`).classList.remove('d-none');
+    }
+
+    function saveChanges(id) {
+        const newName = document.getElementById(`editItemName${id}`).value;
+        const newCount = document.getElementById(`editItemCount${id}`).value;
+        const newState = document.getElementById(`editItemState${id}`).value;
+
+        document.getElementById(`itemName${id}`).textContent = newName;
+        document.getElementById(`itemCount${id}`).textContent = newCount;
+        document.getElementById(`itemState${id}`).textContent =
+            newState === "good" ? "В отличном состоянии" :
+                newState === "bad" ? "Неисправен" : "Не в наличии";
+
+        document.getElementById(`itemName${id}`).classList.remove('d-none');
+        document.getElementById(`itemCount${id}`).classList.remove('d-none');
+        document.getElementById(`itemState${id}`).classList.remove('d-none');
+
+        document.getElementById(`editItemName${id}`).classList.add('d-none');
+        document.getElementById(`editItemCount${id}`).classList.add('d-none');
+        document.getElementById(`editItemState${id}`).classList.add('d-none');
+
+        fetch('/update-item/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: id,
+                name: newName,
+                count: newCount
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при сохранении данных на сервере.');
+                }
+                console.log(response);
+            })
+            .then(data => {
+                console.log('Данные успешно обновлены:', data);
+            })
+            .catch(error => {
+                console.error('Произошла ошибка:', error);
+                alert('Не удалось сохранить изменения на сервере. Попробуйте еще раз.');
+            });
+    }
+    function getCSRFToken() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        return csrfToken ? csrfToken.value : '';
+    }
+</script>
 </body>
 </html>

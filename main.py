@@ -106,7 +106,7 @@ def profile_post():
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
         return redirect("/profile/")
 
-     else:
+    else:
         name_item = request.form['ItemName']
         db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=name_item))
         db_ses.commit()
