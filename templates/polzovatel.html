@@ -63,8 +63,26 @@
                         <div class="inventory-item">
                             <h5>{{ item.name }}</h5>
                             <p>Количество предметов: {{ item.count }}</p>
-                           <form action="" method="post">
-                                    <button class="btn btn-primary" name="ItemName" value="{{ item.name }}">Взять напрокат</button>
+                           <form method="post">
+                                    <button class="btn btn-primary" name="ItemName" id="open" value="{{ item.name }}">Взять напрокат</button>
+                               <dialog>
+      <p>
+        <input type="number" name="quantity"/>
+      </p>
+      <p>
+   			<button hrefid="close">Закрыть окно</button>
+  		</p>
+    </dialog>
+    <script>
+      var dialog = document.querySelector('dialog')
+      document.querySelector('#open').onclick = function () {
+        dialog.showModal()
+      }
+      document.querySelector('#close').onclick = function () {
+        dialog.close()
+      }
+    </script>
+
                             </form>
                         </div>
                     </div>
