@@ -11,6 +11,7 @@
         body {
             background-color: #f8f9fa;
         }
+
         .header {
             background-color: #3487e3;
             color: white;
@@ -19,16 +20,20 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .header span {
             color: white;
         }
+
         .nav-link {
             font-size: 1.5rem;
             color: white;
         }
+
         .inventory-list {
             margin-top: 20px;
         }
+
         .inventory-item {
             background-color: #e9ecef;
             border: 1px solid #ced4da;
@@ -38,9 +43,11 @@
             transition: transform 0.2s;
             cursor: pointer;
         }
+
         .inventory-item:hover {
             transform: scale(1.05);
         }
+
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -48,6 +55,7 @@
             background-color: #3487e3;
             color: white;
         }
+
         .up {
             vertical-align: 45px;
             font-size: 1.5rem;
@@ -91,7 +99,7 @@
             </tr>
         </table>
     </div>
-    <h3>Ваш инвентарь</h3>
+    <h3>План</h3>
     <div class="col-sm-12">
         {% for item in inventory %}
         <div class="col-md-28">
@@ -99,8 +107,11 @@
                 <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
                 <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
                 <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
-                <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none" value="{{ item.count }}"/>
-                <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
+                <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none"
+                       value="{{ item.count }}"/>
+                <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">
+                    Изменить
+                </button>
             </div>
         </div>
         {% endfor %}
@@ -187,6 +198,7 @@
                 alert('Не удалось сохранить изменения на сервере. Попробуйте еще раз.');
             });
     }
+
     function getCSRFToken() {
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
         return csrfToken ? csrfToken.value : '';
