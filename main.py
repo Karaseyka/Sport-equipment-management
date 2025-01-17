@@ -36,7 +36,7 @@ def load_user(user_id):
 # Страница при входе на сайт
 @app.route("/", methods=["GET"])
 def welcome_page():
-    return "Для работы с сайтом требуется авторизация"
+    return render_template("starter.html")
 
 
 # Регистрация пост и гет методы
