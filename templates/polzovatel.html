@@ -46,6 +46,11 @@
         .up {
             vertical-align: 45px;
         }
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -63,29 +68,83 @@
                 <div class="inventory-item">
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
-                    <form method="post">
-                        <button class="btn btn-primary" name="ItemName" id="open" value="{{ item.name }}">Взять
-                            напрокат
-                        </button>
-                        <dialog>
-                            <p>
-                                <input type="number" name="quantity"/>
-                            </p>
-                            <p>
-                                <button hrefid="close">Закрыть окно</button>
-                            </p>
-                        </dialog>
-                        <script>
-                            var dialog = document.querySelector('dialog')
-                            document.querySelector('#open').onclick = function () {
-                              dialog.showModal()
-                            }
-                            document.querySelector('#close').onclick = function () {
-                              dialog.close()
-                            }
-                        </script>
 
-                    </form>
+                    <button class="btn btn-primary" name="ItemName" id="open" value="{{ item.name }}">Взять
+                        напрокат
+                    </button>
+                    <dialog id="myDialog">
+                        <p>
+                            <label>Введите количество товара</label>
+                            <input type="number" name="quantity" id="quantity"/>
+                        </p>
+                        <p>
+                            <label>Введите описание для заявки</label>
+                            <input type="text" name="opisanie" id="opisanie"/>
+                        </p>
+                        <p>
+                            <button id="closeButton">Закрыть окно</button>
+                            <button id="submitButton">Отправить</button>
+                        </p>
+                    </dialog>
+                    <script>
+    // Функция для открытия диалогового окна
+    function openDialog() {
+        const dialog = document.getElementById('myDialog');
+        dialog.showModal();
+    }
+
+    // Функция для закрытия диалогового окна
+    function closeDialog() {
+        const dialog = document.getElementById('myDialog');
+        dialog.close();
+    }
+
+    // Функция для отправки данных на сервер
+    function sendData() {
+        const quantity = document.getElementById('quantity').value;
+        const opisanie = document.getElementById('opisanie').value;
+
+        // Создаем объект с данными
+        const data = {
+            quantity: quantity,
+            opisanie: opisanie
+        };
+
+        // Отправляем данные на сервер
+        fetch('/new_procurement/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Данные успешно отправлены');
+                closeDialog(); // Закрываем диалог после успешной отправки
+            } else {
+                console.error('Ошибка при отправке данных');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+        dialog.close();
+    }
+
+    // Привязываем события к кнопкам
+    document.getElementById('open').addEventListener('click', openDialog);
+    document.getElementById('closeButton').addEventListener('click', closeDialog);
+    //document.getElementById('submitButton').addEventListener('click', sendData);
+
+    // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
+
+
+
+
+                    </script>
+
+
                 </div>
             </div>
             {% endif %}
@@ -98,28 +157,84 @@
                 <div class="inventory-item">
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
-                    <form method="post">
-                        <button class="btn btn-primary" name="ItemName" id="open" value="{{ item.name }}">Взять
-                            напрокат
-                        </button>
-                        <dialog>
-                            <p>
-                                <input type="number" name="quantity"/>
-                            </p>
-                            <p>
-                                <button hrefid="close">Закрыть окно</button>
-                            </p>
-                        </dialog>
-                        <script>
-                            var dialog = document.querySelector('dialog')
-                            document.querySelector('#open').onclick = function () {
-                              dialog.showModal()
-                            }
-                            document.querySelector('#close').onclick = function () {
-                              dialog.close()
-                            }
-                        </script>
-                    </form>
+
+                    <button class="btn btn-primary" name="ItemName" id="open2" value="{{ item.name }}">Взять
+                        напрокат
+                    </button>
+                    <dialog id="myDialog2">
+                        <p>
+                            <label>Введите количество товара</label>
+                            <input type="number" name="quantity" id="quantity2"/>
+                        </p>
+                        <p>
+                            <label>Введите описание для заявки</label>
+                            <input type="text" name="opisanie" id="opisanie2"/>
+                        </p>
+                        <p>
+                            <button id="closeButton2">Закрыть окно</button>
+                            <button id="submitButton2">Отправить</button>
+                        </p>
+                    </dialog>
+                    <script>
+    // Функция для открытия диалогового окна
+    function openDialog() {
+        const dialog = document.getElementById('myDialog2');
+        dialog.showModal();
+    }
+
+    // Функция для закрытия диалогового окна
+    function closeDialog() {
+        const dialog = document.getElementById('myDialog2');
+        dialog.close();
+    }
+
+    // Функция для отправки данных на сервер
+    function sendData() {
+        const quantity = document.getElementById('quantity2').value;
+        const opisanie = document.getElementById('opisanie2').value;
+
+        // Создаем объект с данными
+        const data = {
+            quantity: quantity,
+            opisanie: opisanie
+        };
+
+        // Отправляем данные на сервер
+        fetch('/new_procurement/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Данные успешно отправлены');
+                closeDialog(); // Закрываем диалог после успешной отправки
+            } else {
+                console.error('Ошибка при отправке данных');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+        dialog.close();
+    }
+
+    // Привязываем события к кнопкам
+    document.getElementById('open2').addEventListener('click', openDialog);
+    document.getElementById('closeButton2').addEventListener('click', closeDialog);
+    //document.getElementById('submitButton2').addEventListener('click', sendData);
+
+    // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
+
+
+
+
+                    </script>
+
+
+
                 </div>
             </div>
             {% endif %}
