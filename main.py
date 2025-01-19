@@ -121,11 +121,23 @@ def add_users():
     return render_template('add_users.html', users=users, name=cur_user.name)
 
 
-@app.route('/plan_admin/')
+@app.route('/plan_admin/', methods=["GET"])
 @login_required
-def plan_admin():
+def plan_admin_get():
     cur_user = flask_login.current_user
     return render_template('plan_admin.html', name=cur_user.name)
+
+
+@app.route('/plan_admin/', methods=["POST"])
+@login_required
+def plan_admin_post():
+    cur_user = flask_login.current_user
+    name_item = request.form['name_item']
+    quantity = request.form['quantity']
+    db_ses.add(Procurements(name=name_item, count=quantity))
+    db_ses.commit()
+
+    return redirect('/plan_admin/')
 
 
 @app.route('/list_admin/')
