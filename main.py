@@ -111,13 +111,15 @@ def profile_post():
         
     return redirect("/profile/")
 
+
 @app.route("/new_procurement/", methods=["POST"])
 @login_required
 def new_procurement():
-    print(request.json)
-        
+    sp = request.json
+    cur_user = flask_login.current_user
+    db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=sp['name'], description=sp['opisanie'], count=sp['quantity']))
+    db_ses.commit()
     return "", 201
-
 
 
 @app.route('/add_users/')
