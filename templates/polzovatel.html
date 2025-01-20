@@ -61,96 +61,90 @@
 <div class="container inventory-list">
     <h2 align="center">Доступное Вам</h2>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             {% for item in inventory %}
-            {% if inventory.index(item) % 2 == 0 %}
+            {% if true %}
             <div class="col-md-14">
                 <div class="inventory-item">
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
 
-                    <button class="btn btn-primary" name="ItemName" id="open" value="{{ item.name }}">Взять
-                        напрокат
-                    </button>
-                    <dialog id="myDialog">
+                    <button class="btn btn-primary" name="ItemName" id="open{{ item.name }}" value="{{ item.name }}">Взять на прокат</button>
+                    <dialog id="myDialog{{ item.name }}">
                         <p>
                             <label>Введите количество товара</label>
-                            <input type="number" name="quantity" id="quantity"/>
+                            <input type="number" name="quantity" id="quantity{{ item.name }}"/>
                         </p>
                         <p>
                             <label>Введите описание для заявки</label>
-                            <input type="text" name="opisanie" id="opisanie"/>
+                            <input type="text" name="opisanie" id="opisanie{{ item.name }}"/>
                         </p>
                         <p>
-                            <button id="closeButton">Закрыть окно</button>
-                            <button id="submitButton">Отправить</button>
+                            <button id="closeButton{{ item.name }}">Закрыть окно</button>
+                            <button id="submitButton{{ item.name }}">Отправить</button>
                         </p>
                     </dialog>
                     <script>
-    // Функция для открытия диалогового окна
-    function openDialog() {
-        const dialog = document.getElementById('myDialog');
-        dialog.showModal();
-    }
+                        // Функция для открытия диалогового окна
+                        function openDialog() {
+                            const button = document.getElementById('open{{ item.name }}');
+                            if (button.textContent != "Взять на прокат") return;
+                            const dialog = document.getElementById('myDialog{{ item.name }}');
+                            dialog.showModal();
+                        }
 
-    // Функция для закрытия диалогового окна
-    function closeDialog() {
-        const dialog = document.getElementById('myDialog');
-        dialog.close();
-    }
+                        // Функция для закрытия диалогового окна
+                        function closeDialog() {
+                            const dialog = document.getElementById('myDialog{{ item.name }}');
+                            dialog.close();
+                        }
 
-    // Функция для отправки данных на сервер
-    function sendData() {
-        const quantity = document.getElementById('quantity').value;
-        const opisanie = document.getElementById('opisanie').value;
+                        // Функция для отправки данных на сервер
+                        function sendData() {
+                            const quantity = document.getElementById('quantity{{ item.name }}').value;
+                            const opisanie = document.getElementById('opisanie{{ item.name }}').value;
+                            const dialog = document.getElementById('myDialog{{ item.name }}');
 
-        // Создаем объект с данными
-        const data = {
-            quantity: quantity,
-            opisanie: opisanie
-        };
+                            if (Number(quantity) > Number("{{ item.count }}") || quantity < 1) {
+                                alert("некоректное число");
+                                return
+                            }
 
-        // Отправляем данные на сервер
-        fetch('/new_procurement/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Данные успешно отправлены');
-                closeDialog(); // Закрываем диалог после успешной отправки
-            } else {
-                console.error('Ошибка при отправке данных');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-        });
-        dialog.close();
-    }
+                            const data = {
+                                quantity: quantity,
+                                opisanie: opisanie,
+                                name: "{{ item.name }}"
+                            };
+                            fetch('/new_procurement/', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data)
+                            }).then(response => {
+                                if (response.ok) {
+                                    dialog.close();
+                                    const button = document.getElementById('open{{ item.name }}');
+                                    button.textContent = 'заявка оставлена';
+                                    button.style.backgroundColor = 'green';
+                                }
+                                else alert('Ошибка при отправке данных ' + response.status);
+                            }).catch(error => {
+                                console.error('Ошибка:', error);
+                            });
+                        }
 
-    // Привязываем события к кнопкам
-    document.getElementById('open').addEventListener('click', openDialog);
-    document.getElementById('closeButton').addEventListener('click', closeDialog);
-    //document.getElementById('submitButton').addEventListener('click', sendData);
+                        // Привязываем события к кнопкам
+                        document.getElementById('open{{ item.name }}').addEventListener('click', openDialog);
+                        document.getElementById('closeButton{{ item.name }}').addEventListener('click', closeDialog);
+                        document.getElementById('submitButton{{ item.name }}').addEventListener('click', sendData);
 
-    // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
-
-
-
-
+                        // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
                     </script>
-
-
                 </div>
             </div>
             {% endif %}
             {% endfor %}
         </div>
-        <div class="col-sm-6">
+        <!-- <div class="col-sm-6">
             {% for item in inventory %}
             {% if inventory.index(item) % 2 != 0 %}
             <div class="col-md-14">
@@ -176,70 +170,63 @@
                         </p>
                     </dialog>
                     <script>
-    // Функция для открытия диалогового окна
-    function openDialog() {
-        const dialog = document.getElementById('myDialog2');
-        dialog.showModal();
-    }
+                        // Функция для открытия диалогового окна
+                        function openDialog() {
+                            const dialog = document.getElementById('myDialog2');
+                            dialog.showModal();
+                        }
 
-    // Функция для закрытия диалогового окна
-    function closeDialog() {
-        const dialog = document.getElementById('myDialog2');
-        dialog.close();
-    }
+                        // Функция для закрытия диалогового окна
+                        function closeDialog() {
+                            const dialog = document.getElementById('myDialog2');
+                            dialog.close();
+                        }
 
-    // Функция для отправки данных на сервер
-    function sendData() {
-        const quantity = document.getElementById('quantity2').value;
-        const opisanie = document.getElementById('opisanie2').value;
+                        // Функция для отправки данных на сервер
+                        function sendData() {
+                            const quantity = document.getElementById('quantity2').value;
+                            const opisanie = document.getElementById('opisanie2').value;
 
-        // Создаем объект с данными
-        const data = {
-            quantity: quantity,
-            opisanie: opisanie
-        };
+                            // Создаем объект с данными
+                            const data = {
+                                quantity: quantity,
+                                opisanie: opisanie
+                            };
 
-        // Отправляем данные на сервер
-        fetch('/new_procurement/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Данные успешно отправлены');
-                closeDialog(); // Закрываем диалог после успешной отправки
-            } else {
-                console.error('Ошибка при отправке данных');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-        });
-        dialog.close();
-    }
+                            // Отправляем данные на сервер
+                            fetch('/new_procurement/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(data)
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log('Данные успешно отправлены');
+                                    closeDialog(); // Закрываем диалог после успешной отправки
+                                } else {
+                                    console.error('Ошибка при отправке данных');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Ошибка:', error);
+                            });
+                            dialog.close();
+                        }
 
-    // Привязываем события к кнопкам
-    document.getElementById('open2').addEventListener('click', openDialog);
-    document.getElementById('closeButton2').addEventListener('click', closeDialog);
-    //document.getElementById('submitButton2').addEventListener('click', sendData);
+                        // Привязываем события к кнопкам
+                        document.getElementById('open2').addEventListener('click', openDialog);
+                        document.getElementById('closeButton2').addEventListener('click', closeDialog);
+                        //document.getElementById('submitButton2').addEventListener('click', sendData);
 
-    // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
-
-
-
-
+                        // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
                     </script>
-
-
-
                 </div>
             </div>
             {% endif %}
             {% endfor %}
-        </div>
+        </div> -->
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
