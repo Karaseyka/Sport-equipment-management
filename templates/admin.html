@@ -33,23 +33,33 @@
             {% for item in inventory %}
             {% if inventory.index(item) % 2 == 0 %}
             <div class="col-md-14">
-               <div class="inventory-item">
-    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
-    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
+                <div class="inventory-item">
+                    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
+                    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none"
+                           value="{{ item.name }}"/>
 
-    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
-    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none" value="{{ item.count }}"/>
+                    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
+                    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none"
+                           value="{{ item.count }}"/>
 
-    <p>Состояние: <span id="itemState{{ item.id }}">
-        {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
-    </span></p>
-    <select id="editItemState{{ item.id }}" class="form-select d-none">
-        <option value="good" {% if item.state == "good" %} selected {% endif %}>В отличном состоянии</option>
-        <option value="bad" {% if item.state == "bad" %} selected {% endif %}>Неисправен</option>
-        <option value="out" {% if item.state == "out" %} selected {% endif %}>Не в наличии</option>
-    </select>
-    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
-</div>
+                    <p>Состояние: <span id="itemState{{ item.id }}">
+                    {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
+                     </span></p>
+                    <select id="editItemState{{ item.id }}" class="form-select d-none">
+                        <option value="good" {% if item.state==
+                        "good" %} selected {% endif %}>В отличном состоянии</option>
+                        <option value="bad" {% if item.state==
+                        "bad" %} selected {% endif %}>Неисправен</option>
+                        <option value="out" {% if item.state==
+                        "out" %} selected {% endif %}>Не в наличии</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)"
+                            data-editing="false">Изменить
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteItem('{{ item.id }}', this)"
+                            data-editing="false">Удалить
+                    </button>
+                </div>
             </div>
             {% endif %}
             {% endfor %}
@@ -58,24 +68,34 @@
             {% for item in inventory %}
             {% if inventory.index(item) % 2 != 0 %}
             <div class="col-md-14">
-              <div class="inventory-item">
-    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
-    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
+                <div class="inventory-item">
+                    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
+                    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none"
+                           value="{{ item.name }}"/>
 
-    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
-    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none" value="{{ item.count }}"/>
+                    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
+                    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none"
+                           value="{{ item.count }}"/>
 
-    <p>Состояние: <span id="itemState{{ item.id }}">
-        {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
-    </span></p>
-    <select id="editItemState{{ item.id }}" class="form-select d-none">
-        <option value="good" {% if item.state == "good" %} selected {% endif %}>В отличном состоянии</option>
-        <option value="bad" {% if item.state == "bad" %} selected {% endif %}>Неисправен</option>
-        <option value="out" {% if item.state == "out" %} selected {% endif %}>Не в наличии</option>
-    </select>
+                    <p>Состояние: <span id="itemState{{ item.id }}">
+                    {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
+                    </span></p>
+                    <select id="editItemState{{ item.id }}" class="form-select d-none">
+                        <option value="good" {% if item.state==
+                        "good" %} selected {% endif %}>В отличном состоянии</option>
+                        <option value="bad" {% if item.state==
+                        "bad" %} selected {% endif %}>Неисправен</option>
+                        <option value="out" {% if item.state==
+                        "out" %} selected {% endif %}>Не в наличии</option>
+                    </select>
 
-    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">Изменить</button>
-</div>
+                    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)"
+                            data-editing="false">Изменить
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteItem('{{ item.id }}', this)"
+                            data-editing="false">Удалить
+                    </button>
+                </div>
             </div>
             {% endif %}
             {% endfor %}
@@ -85,6 +105,30 @@
 </div>
 
 <script>
+    function deleteItem(itemId, button) {
+       fetch(`/api/delete-item/${itemId}`, {
+        method: 'DELETE', // Метод запроса
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка при удалении элемента');
+        }
+        return response.json(); // Если нужно, обрабатываем ответ
+    })
+    .then(data => {
+        console.log('Элемент успешно удален:', data);
+        const itemElement = button.closest('.inventory-item');
+        if (itemElement) {
+            itemElement.remove();
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
     function toggleEditMode(id, button) {
         const isEditing = button.dataset.editing === "true";
 
@@ -165,6 +209,10 @@
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
         return csrfToken ? csrfToken.value : '';
     }
+
+
+
+
 </script>
 
 
