@@ -83,13 +83,17 @@ def profile_get():
     cur_user = flask_login.current_user
     if cur_user.type == "user":
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.invent).all()
-        return render_template('polzovatel.html', name=cur_user.name, inventory=items_of_inventory,
+        appid = db_ses.query(Applications).filter_by(user=cur_user.id).all()
+        appid = [i.id for i in appid]
+        print(appid)
+        return render_template('polzovatel.html', name=cur_user.name, appid = appid, inventory=items_of_inventory,
                                id=cur_user.id)
     else:
 
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
 
         return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
+
 
 @app.route("/profile/", methods=["POST"])
 @login_required
@@ -108,7 +112,7 @@ def profile_post():
         name_item = request.form['ItemName']
         db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=name_item))
         db_ses.commit()
-        
+
     return redirect("/profile/")
 
 
@@ -117,7 +121,9 @@ def profile_post():
 def new_procurement():
     sp = request.json
     cur_user = flask_login.current_user
-    db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=sp['name'], description=sp['opisanie'], count=sp['quantity']))
+    db_ses.add(
+        Applications(user=cur_user.id, status='ожидает действия', inventId=sp['name'], description=sp['opisanie'],
+                     count=sp['quantity']))
     db_ses.commit()
     return "", 201
 
@@ -126,15 +132,17 @@ def new_procurement():
 @login_required
 def add_users():
     cur_user = flask_login.current_user
-    users = db_ses.query(User).filter_by(type="user", invent=None).all()
-    return render_template('add_users.html', users=users, name=cur_user.name)
+    if cur_user.type == "admin":
+        users = db_ses.query(User).filter_by(type="user", invent=None).all()
+        return render_template('add_users.html', users=users, name=cur_user.name)
 
 
 @app.route('/plan_admin/', methods=["GET"])
 @login_required
 def plan_admin_get():
     cur_user = flask_login.current_user
-    return render_template('plan_admin.html', name=cur_user.name)
+    if cur_user.type == "admin":
+        return render_template('plan_admin.html', name=cur_user.name)
 
 
 @app.route('/plan_admin/', methods=["POST"])
@@ -153,13 +161,18 @@ def plan_admin_post():
 @login_required
 def list_admin():
     cur_user = flask_login.current_user
-    return render_template('list_admin.html', name=cur_user.name)
+    if cur_user.type == "admin":
+        users = db_ses.query(User).filter_by(type="user", invent=cur_user.id).all()
+        return render_template('list_admin.html', users=users)
+
 
 @app.route('/application_list/')
 @login_required
 def application_list_admin():
     cur_user = flask_login.current_user
-    return render_template('list_admin.html', name=cur_user.name)
+    if cur_user.type == "admin":
+        applications = db_ses.query(Applications).filter_by(inventId=cur_user.id)
+        return render_template('application_list_admin.html', applications=applications)
 
 
 @app.route('/add_user_to_inventory/', methods=['POST'])
@@ -171,6 +184,7 @@ def add_user_to_inventory():
     db_ses.add(goal_user)
     db_ses.commit()
     return "", 201
+
 
 @app.route('/update-item/', methods=['POST'])
 @login_required
@@ -188,6 +202,7 @@ def update_item():
         db_ses.commit()
 
     return render_template('admin.html')
+
 
 # -----------------
 

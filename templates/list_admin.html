@@ -1,3 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container user-list">
+    <h2 align="center"> Пользователи вашего инвентаря </h2>
+    <div class="row">
+        {% for user in users %}
+            <div class="col-12">
+                <div class="user-item" id="user-{{ user.id }}">
+                    <h5>{{ user.name }}</h5>
+                    <button class="btn btn-danger" onclick="addToInventory({{ user.id }})">Удалить пользователя</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock%}
