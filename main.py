@@ -111,6 +111,13 @@ def profile_post():
         
     return redirect("/profile/")
 
+@app.route("/new_procurement/", methods=["POST"])
+@login_required
+def new_procurement():
+    print(request.json)
+        
+    return "", 201
+
 
 
 @app.route('/add_users/')
