@@ -54,9 +54,12 @@
     </style>
 </head>
 <body>
-<div class="header">
-    <span class="up" style="float:left">Инвентарь</span>
-    <span class="up" style="float:right">{{ name }}</span>
+<div class="header" style="display: flex; justify-content: space-between; align-items: center; font-size: 24px;">
+    <span>Инвентарь</span>
+    <div style="display: flex; align-items: center;">
+        <span>{{ name }}</span>
+        <button class="btn btn-warning rounded-pill" type="button" id="exit" style="font-size: 18px; padding: 10px 25px; margin-left: 30px;">Выйти из аккаунта</button>
+    </div>
 </div>
 <div class="container inventory-list">
     <h2 align="center">Доступное Вам</h2>
@@ -85,7 +88,9 @@
                         </p>
                     </dialog>
                     <script>
-                        // Функция для открытия диалогового окна
+                        document.getElementById("exit").onclick = function() {
+                                window.location.href = "http://127.0.0.1:5000/register";
+                                 };
                         function openDialog() {
                             const button = document.getElementById('open{{ item.name }}');
                             if (button.textContent != "Взять на прокат") return;
@@ -93,13 +98,13 @@
                             dialog.showModal();
                         }
 
-                        // Функция для закрытия диалогового окна
+
                         function closeDialog() {
                             const dialog = document.getElementById('myDialog{{ item.name }}');
                             dialog.close();
                         }
 
-                        // Функция для отправки данных на сервер
+
                         function sendData() {
                             const quantity = document.getElementById('quantity{{ item.name }}').value;
                             const opisanie = document.getElementById('opisanie{{ item.name }}').value;
@@ -132,12 +137,12 @@
                             });
                         }
 
-                        // Привязываем события к кнопкам
+
                         document.getElementById('open{{ item.name }}').addEventListener('click', openDialog);
                         document.getElementById('closeButton{{ item.name }}').addEventListener('click', closeDialog);
                         document.getElementById('submitButton{{ item.name }}').addEventListener('click', sendData);
 
-                        // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
+
                     </script>
                 </div>
             </div>
