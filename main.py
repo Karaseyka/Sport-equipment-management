@@ -85,7 +85,7 @@ def profile_get():
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.invent).all()
         appid = db_ses.query(Applications).filter_by(user=cur_user.id).all()
         appid = [i.id for i in appid]
-        print(appid)
+
         return render_template('polzovatel.html', name=cur_user.name, appid = appid, inventory=items_of_inventory,
                                id=cur_user.id)
     else:

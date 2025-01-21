@@ -11,4 +11,6 @@ class Procurements(SqlAlchemyBase, UserMixin, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     count = sqlalchemy.Column(sqlalchemy.Integer)
+    price = sqlalchemy.Column(sqlalchemy.Integer)
+    supplier = sqlalchemy.Column(sqlalchemy.String)
     status = sqlalchemy.Column(sqlalchemy.String)
