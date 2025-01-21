@@ -13,93 +13,62 @@
             </tr>
             <tr>
                 <form method="POST">
-                    <td><input type="text" name="name_item"/></td>
-                    <td><input type="number" name="quantity"/></td>
+                    <td><input type="text" class="form-control" name="name_item" placeholder="Имя" required></td>
+                    <td><input type="number" class="form-control" name="quantity" placeholder="Шт." required></td>
                     <td><select id="condition" name="condition">
                         <option value="good">В отличном состоянии</option>
                         <option value="bad">Неисправен</option>
                         <option value="out">Не в наличии</option>
                     </select></td>
                     <td>
-                        <button type="submit">Подтвердить</button>
+                        <button class="btn btn-primary" data-editing="false">Подтвердить</button>
                     </td>
                 </form>
             </tr>
         </table>
     </div>
-    <h3>Ваш инвентарь</h3>
-    <div class="row">
-        <div class="col-sm-6">
-            {% for item in inventory %}
-            {% if inventory.index(item) % 2 == 0 %}
-            <div class="col-md-14">
-                <div class="inventory-item">
-                    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
-                    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none"
-                           value="{{ item.name }}"/>
-
-                    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
-                    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none"
-                           value="{{ item.count }}"/>
-
-                    <p>Состояние: <span id="itemState{{ item.id }}">
-                    {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
-                     </span></p>
-                    <select id="editItemState{{ item.id }}" class="form-select d-none">
-                        <option value="good" {% if item.state==
-                        "good" %} selected {% endif %}>В отличном состоянии</option>
-                        <option value="bad" {% if item.state==
-                        "bad" %} selected {% endif %}>Неисправен</option>
-                        <option value="out" {% if item.state==
-                        "out" %} selected {% endif %}>Не в наличии</option>
-                    </select>
-                    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)"
-                            data-editing="false">Изменить
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteItem('{{ item.id }}', this)"
-                            data-editing="false">Удалить
-                    </button>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
+    <div class="col-3"><h3></h3></div>
+    <div class="row justify-content-start">
+        <div class="col-3">
+            <h3>Ваш инвентарь</h3>
         </div>
-        <div class="col-sm-6">
-            {% for item in inventory %}
-            {% if inventory.index(item) % 2 != 0 %}
-            <div class="col-md-14">
-                <div class="inventory-item">
-                    <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
-                    <input type="text" id="editItemName{{ item.id }}" class="form-control d-none"
-                           value="{{ item.name }}"/>
-
-                    <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
-                    <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none"
-                           value="{{ item.count }}"/>
-
-                    <p>Состояние: <span id="itemState{{ item.id }}">
-                    {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
-                    </span></p>
-                    <select id="editItemState{{ item.id }}" class="form-select d-none">
-                        <option value="good" {% if item.state==
-                        "good" %} selected {% endif %}>В отличном состоянии</option>
-                        <option value="bad" {% if item.state==
-                        "bad" %} selected {% endif %}>Неисправен</option>
-                        <option value="out" {% if item.state==
-                        "out" %} selected {% endif %}>Не в наличии</option>
-                    </select>
-
-                    <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)"
-                            data-editing="false">Изменить
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteItem('{{ item.id }}', this)"
-                            data-editing="false">Удалить
-                    </button>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-secondary">Скачать отчет</button>
         </div>
+    </div>
+    <div class="col-3"><h3></h3></div>
+    <div class="row justify-content-start">
+        {% for item in inventory %}
+        <div class="col-6">
+            <div class="inventory-item">
+                <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
+                <input type="text" id="editItemName{{ item.id }}" class="form-control d-none"
+                       value="{{ item.name }}"/>
+
+                <p>Количество предметов: <span id="itemCount{{ item.id }}">{{ item.count }}</span></p>
+                <input type="number" id="editItemCount{{ item.id }}" class="form-control d-none"
+                       value="{{ item.count }}"/>
+
+                <p>Состояние: <span id="itemState{{ item.id }}">
+                {% if item.state == "good" %} В отличном состоянии {% elif item.state == "bad" %} Неисправен {% else %} Не в наличии {% endif %}
+                 </span></p>
+                <select id="editItemState{{ item.id }}" class="form-select d-none">
+                    <option value="good" {% if item.state==
+                    "good" %} selected {% endif %}>В отличном состоянии</option>
+                    <option value="bad" {% if item.state==
+                    "bad" %} selected {% endif %}>Неисправен</option>
+                    <option value="out" {% if item.state==
+                    "out" %} selected {% endif %}>Не в наличии</option>
+                </select>
+                <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)"
+                        data-editing="false">Изменить
+                </button>
+                <button class="btn btn-danger" onclick="deleteItem('{{ item.id }}', this)"
+                        data-editing="false">Удалить
+                </button>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 </div>
