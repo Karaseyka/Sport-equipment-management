@@ -106,8 +106,8 @@
 
 <script>
     function deleteItem(itemId, button) {
-       fetch(`/api/delete-item/${itemId}`, {
-        method: 'DELETE', // Метод запроса
+       fetch(`/delete-item/`, {
+        method: 'POST', // Метод запроса
         headers: {
             'Content-Type': 'application/json'
         }
