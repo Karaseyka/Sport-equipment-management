@@ -192,6 +192,17 @@ def add_user_to_inventory():
     return "", 201
 
 
+@app.route('/delete-item/', methods=['POST'])
+@login_required
+def delete_item():
+    item_id = request.json.get('itemId')
+    print(abc)
+    print(1)
+    db_ses.delete(item_id)
+    db_ses.commit()
+    return "", 201
+
+
 @app.route('/update-item/', methods=['POST'])
 @login_required
 def update_item():
