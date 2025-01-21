@@ -51,6 +51,7 @@
 
 
 
+
     </style>
 </head>
 <body>
@@ -58,7 +59,8 @@
     <span>Инвентарь</span>
     <div style="display: flex; align-items: center;">
         <span>{{ name }}</span>
-        <button class="btn btn-danger rounded-pill" type="button" id="exit" style="font-size: 18px; padding: 10px 25px; margin-left: 30px;">Выйти из аккаунта</button>
+        <button class="btn btn-outline-light" type="button" id="exit" style="margin-left: 15px;">Выйти из аккаунта
+        </button>
     </div>
 </div>
 <div class="container inventory-list">
@@ -72,7 +74,9 @@
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
 
-                    <button class="btn btn-primary" name="ItemName" id="open{{ item.name }}" value="{{ item.name }}">Взять на прокат</button>
+                    <button class="btn btn-primary" name="ItemName" id="open{{ item.name }}" value="{{ item.name }}">
+                        Взять на прокат
+                    </button>
                     <dialog id="myDialog{{ item.name }}">
                         <p>
                             <label>Введите количество товара</label>
@@ -88,9 +92,10 @@
                         </p>
                     </dialog>
                     <script>
-                        document.getElementById("exit").onclick = function() {
-                                window.location.href = "http://127.0.0.1:5000/register";
-                                 };
+
+                         document.getElementById('exit').onclick = function() {
+                            window.location.href = 'http://127.0.0.1:5000';
+                              };
                         function openDialog() {
                             const button = document.getElementById('open{{ item.name }}');
                             if (button.textContent != "Взять на прокат") return;
@@ -141,6 +146,7 @@
                         document.getElementById('open{{ item.name }}').addEventListener('click', openDialog);
                         document.getElementById('closeButton{{ item.name }}').addEventListener('click', closeDialog);
                         document.getElementById('submitButton{{ item.name }}').addEventListener('click', sendData);
+                        
 
 
                     </script>
