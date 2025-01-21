@@ -153,7 +153,9 @@ def plan_admin_post():
     cur_user = flask_login.current_user
     name_item = request.form['name_item']
     quantity = request.form['quantity']
-    db_ses.add(Procurements(name=name_item, count=quantity))
+    supplier = request.form['supplier']
+    price = requst.form['price']
+    db_ses.add(Procurements(name=name_item, count=quantity, supplier=supplier, price=price))
     db_ses.commit()
 
     return redirect('/plan_admin/')
