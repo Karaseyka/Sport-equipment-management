@@ -208,6 +208,13 @@ def update_item():
     return render_template('admin.html')
 
 
+@app.route("/выйти/", methods=["GET"])
+@login_required
+def выйти():
+    session.clear()
+    return redirect("/register/")
+
+
 # -----------------
 
 
