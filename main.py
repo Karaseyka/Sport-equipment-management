@@ -135,6 +135,7 @@ def add_users():
     if cur_user.type == "admin":
         users = db_ses.query(User).filter_by(type="user", invent=None).all()
         return render_template('add_users.html', users=users, name=cur_user.name)
+    return "", 403
 
 
 @app.route('/plan_admin/', methods=["GET"])
@@ -143,6 +144,7 @@ def plan_admin_get():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
         return render_template('plan_admin.html', name=cur_user.name)
+    return "", 403
 
 
 @app.route('/plan_admin/', methods=["POST"])
@@ -164,6 +166,7 @@ def list_admin():
     if cur_user.type == "admin":
         users = db_ses.query(User).filter_by(type="user", invent=cur_user.id).all()
         return render_template('list_admin.html', users=users)
+    return "", 403
 
 
 @app.route('/application_list/')
@@ -173,6 +176,7 @@ def application_list_admin():
     if cur_user.type == "admin":
         applications = db_ses.query(Applications).filter_by(inventId=cur_user.id)
         return render_template('application_list_admin.html', applications=applications)
+    return "", 403
 
 
 @app.route('/add_user_to_inventory/', methods=['POST'])
