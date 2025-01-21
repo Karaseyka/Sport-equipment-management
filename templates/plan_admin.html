@@ -70,33 +70,28 @@
     function enableEditMode(id) {
         document.getElementById(`itemName${id}`).classList.add('d-none');
         document.getElementById(`itemCount${id}`).classList.add('d-none');
-        document.getElementById(`itemState${id}`).classList.add('d-none');
 
         document.getElementById(`editItemName${id}`).classList.remove('d-none');
         document.getElementById(`editItemCount${id}`).classList.remove('d-none');
-        document.getElementById(`editItemState${id}`).classList.remove('d-none');
+
     }
 
     function saveChanges(id) {
         const newName = document.getElementById(`editItemName${id}`).value;
         const newCount = document.getElementById(`editItemCount${id}`).value;
-        const newState = document.getElementById(`editItemState${id}`).value;
 
         document.getElementById(`itemName${id}`).textContent = newName;
         document.getElementById(`itemCount${id}`).textContent = newCount;
-        document.getElementById(`itemState${id}`).textContent =
-            newState === "good" ? "В отличном состоянии" :
-                newState === "bad" ? "Неисправен" : "Не в наличии";
 
         document.getElementById(`itemName${id}`).classList.remove('d-none');
         document.getElementById(`itemCount${id}`).classList.remove('d-none');
-        document.getElementById(`itemState${id}`).classList.remove('d-none');
+
 
         document.getElementById(`editItemName${id}`).classList.add('d-none');
         document.getElementById(`editItemCount${id}`).classList.add('d-none');
-        document.getElementById(`editItemState${id}`).classList.add('d-none');
 
-        fetch('/update-item/', {
+
+        fetch('/update-item-plan/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +100,7 @@
             body: JSON.stringify({
                 id: id,
                 name: newName,
-                count: newCount
+
             })
         })
             .then(response => {
