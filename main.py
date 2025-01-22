@@ -203,6 +203,16 @@ def delete_item():
     return redirect ("/profile")
 
 
+@app.route('/delete-user/', methods=['POST'])
+@login_required
+def delete_user():
+    user_id = request.json.get('id')
+    print(user_id)
+    db_ses.query(User).filter_by(id=user_id).update({'invent': None})
+    db_ses.commit()
+    return redirect("/profile")
+
+
 @app.route('/update-item/', methods=['POST'])
 @login_required
 def update_item():
