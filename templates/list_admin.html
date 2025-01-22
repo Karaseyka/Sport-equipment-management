@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container user-list">
-    <h2 align="center"> Пользователи вашего инвентаря </h2>
+    <h2 align="center">Список пользователей в инвентаре</h2>
     <div class="row">
         {% for user in users %}
             <div class="col-12">
                 <div class="user-item" id="user-{{ user.id }}">
                     <h5>{{ user.name }}</h5>
-                    <button class="btn btn-danger" onclick="addToInventory({{ user.id }})">Удалить пользователя</button>
+                    <button class="btn btn-primary" onclick="deleteUser({{ user.id }})">Удалить пользователя</button>
                 </div>
             </div>
         {% endfor %}
     </div>
 </div>
-
+    <script>
+        function deleteUser(userId) {
+        fetch('/delete-user/', {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({id: userId})
+        }).then(async function(response) {
+            if (response.status == 201) document.getElementById('user-' + userId).remove();
+        });
+    }
+    </script>
 {% endblock %}
