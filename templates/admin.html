@@ -82,14 +82,18 @@
                 'X-CSRFToken': getCSRFToken()
             },
             body: JSON.stringify({
-                id: itemId,
+                id: itemId
             })
     })
     .then(response => {
+    if (response.ok) {
+
+        window.location.reload();
+      }
         if (!response.ok) {
             throw new Error('Ошибка при удалении элемента');
         }
-        return response.json(); // Если нужно, обрабатываем ответ
+        return response.json(); 
     })
     .then(data => {
         console.log('Элемент успешно удален:', data);
@@ -182,11 +186,5 @@
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
         return csrfToken ? csrfToken.value : '';
     }
-
-
-
-
 </script>
-
-
 {% endblock %}
