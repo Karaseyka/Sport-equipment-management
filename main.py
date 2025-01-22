@@ -86,7 +86,7 @@ def profile_get():
         appid = db_ses.query(Applications).filter_by(user=cur_user.id).all()
         appid = [i.id for i in appid]
 
-        return render_template('polzovatel.html', name=cur_user.name, appid = appid, inventory=items_of_inventory,
+        return render_template('polzovatel.html', name=cur_user.name, appid=appid, inventory=items_of_inventory,
                                id=cur_user.id)
     else:
 
@@ -195,12 +195,12 @@ def add_user_to_inventory():
 @app.route('/delete-item/', methods=['POST'])
 @login_required
 def delete_item():
-    item_id = request.json.get('itemId')
-    print(abc)
-    print(1)
-    db_ses.delete(item_id)
+    item_id = request.json.get('id')
+    item = db_ses.query(Inventory).get(item_id)
+    print(type(item_id), item_id, item)
+    db_ses.delete(item)
     db_ses.commit()
-    return "", 201
+    return redirect ("/profile")
 
 
 @app.route('/update-item/', methods=['POST'])
@@ -226,10 +226,6 @@ def update_item():
 def выйти():
     session.clear()
     return redirect("/register/")
-
-
-# -----------------
-
 
 if __name__ == "__main__":
     app.run(debug=True)
