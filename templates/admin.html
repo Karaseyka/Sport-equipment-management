@@ -76,10 +76,14 @@
 <script>
     function deleteItem(itemId, button) {
        fetch(`/delete-item/`, {
-        method: 'POST', // Метод запроса
-        headers: {
-            'Content-Type': 'application/json'
-        }
+         method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: itemId,
+            })
     })
     .then(response => {
         if (!response.ok) {
