@@ -9,3 +9,5 @@ data/database/__pycache__/__init__.cpython-313.pyc
 data/__pycache__/__init__.cpython-313.pyc
 data/__pycache__/__all_models.cpython-313.pyc
 __pycache__/sqll.cpython-313.pyc
+.idea/Sport-equipment-management.iml
+/.idea
