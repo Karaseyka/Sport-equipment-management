@@ -10,11 +10,33 @@
             background-color: #f8f9fa;
         }
 
-        .header {
-            background-color: #3487e3;
+        .header span {
             color: white;
-            padding: 40px;
-            text-align: center;
+        }
+
+        .navbar {
+            height: 80px;
+            background-color: #0b9ebb;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-style: oblique;
+            font-weight: bold;
+            border: 2px solid #ced4da;
+            border-radius: 12px;
+            margin: 5px;
+            padding: 1px 15px 3px 15px;
+        }
+
+        .nav-link {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #eeeeee;
+        }
+
+        .nav-link:hover {
+            color: white;
         }
 
         .inventory-list {
@@ -35,34 +57,16 @@
             transform: scale(1.05);
         }
 
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #3487e3;
-            color: white;
-        }
-
-        .up {
-            vertical-align: 45px;
-        }
-
-
-
-
-
-
     </style>
 </head>
 <body>
-<div class="header" style="display: flex; justify-content: space-between; align-items: center; font-size: 24px;">
-    <span>Инвентарь</span>
-    <div style="display: flex; align-items: center;">
-        <span>{{ name }}</span>
-        <button class="btn btn-outline-light" type="button" id="exit" style="margin-left: 15px;">Выйти из аккаунта
-        </button>
-    </div>
-</div>
+<nav class="navbar navbar-expand-md navbar-dark mb-4 justify-content-between">
+    <a class="navbar-brand">Ваш инвентарь</a>
+    <form class="form-inline">
+        <a href="/profile/" class="nav-link active">{{name}}</a>
+        <button class="btn btn-outline-light" type="button" id="exit" style="margin-left: 15px;">Выйти из аккаунта</button>
+    </form>
+</nav>
 <div class="container inventory-list">
     <h2 align="center">Доступное Вам</h2>
     <div class="row">
@@ -104,8 +108,6 @@
                             const dialog = document.getElementById('myDialog{{ item.name }}');
                             dialog.close();
                         }
-
-
                         function sendData() {
                             const quantity = document.getElementById('quantity{{ item.name }}').value;
                             const opisanie = document.getElementById('opisanie{{ item.name }}').value;
@@ -123,7 +125,7 @@
                             };
                             fetch('/new_procurement/', {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
+                                headers: {'Content-Type': 'application/json'},
                                 body: JSON.stringify(data)
                             }).then(response => {
                                 if (response.ok) {
@@ -131,118 +133,29 @@
                                     const button = document.getElementById('open{{ item.name }}');
                                     button.textContent = 'заявка оставлена';
                                     button.style.backgroundColor = 'green';
-                                }
-                                else alert('Ошибка при отправке данных ' + response.status);
+                                } else alert('Ошибка при отправке данных ' + response.status);
                             }).catch(error => {
                                 console.error('Ошибка:', error);
                             });
                         }
-
-
                         document.getElementById('open{{ item.name }}').addEventListener('click', openDialog);
                         document.getElementById('closeButton{{ item.name }}').addEventListener('click', closeDialog);
                         document.getElementById('submitButton{{ item.name }}').addEventListener('click', sendData);
-                        
-
-
                     </script>
                 </div>
             </div>
             {% endif %}
             {% endfor %}
         </div>
-        <!-- <div class="col-sm-6">
-            {% for item in inventory %}
-            {% if inventory.index(item) % 2 != 0 %}
-            <div class="col-md-14">
-                <div class="inventory-item">
-                    <h5>{{ item.name }}</h5>
-                    <p>Количество предметов: {{ item.count }}</p>
-
-                    <button class="btn btn-primary" name="ItemName" id="open2" value="{{ item.name }}">Взять
-                        напрокат
-                    </button>
-                    <dialog id="myDialog2">
-                        <p>
-                            <label>Введите количество товара</label>
-                            <input type="number" name="quantity" id="quantity2"/>
-                        </p>
-                        <p>
-                            <label>Введите описание для заявки</label>
-                            <input type="text" name="opisanie" id="opisanie2"/>
-                        </p>
-                        <p>
-                            <button id="closeButton2">Закрыть окно</button>
-                            <button id="submitButton2">Отправить</button>
-                        </p>
-                    </dialog>
-                    <script>
-                        // Функция для открытия диалогового окна
-                        function openDialog() {
-                            const dialog = document.getElementById('myDialog2');
-                            dialog.showModal();
-                        }
-
-                        // Функция для закрытия диалогового окна
-                        function closeDialog() {
-                            const dialog = document.getElementById('myDialog2');
-                            dialog.close();
-                        }
-
-                        // Функция для отправки данных на сервер
-                        function sendData() {
-                            const quantity = document.getElementById('quantity2').value;
-                            const opisanie = document.getElementById('opisanie2').value;
-
-                            // Создаем объект с данными
-                            const data = {
-                                quantity: quantity,
-                                opisanie: opisanie
-                            };
-
-                            // Отправляем данные на сервер
-                            fetch('/new_procurement/', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(data)
-                            })
-                            .then(response => {
-                                if (response.ok) {
-                                    console.log('Данные успешно отправлены');
-                                    closeDialog(); // Закрываем диалог после успешной отправки
-                                } else {
-                                    console.error('Ошибка при отправке данных');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Ошибка:', error);
-                            });
-                            dialog.close();
-                        }
-
-                        // Привязываем события к кнопкам
-                        document.getElementById('open2').addEventListener('click', openDialog);
-                        document.getElementById('closeButton2').addEventListener('click', closeDialog);
-                        //document.getElementById('submitButton2').addEventListener('click', sendData);
-
-                        // Открываем диалоговое окно (вы можете вызвать эту функцию по своему усмотрению)
-                    </script>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div> -->
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    document.getElementById("exit").onclick = function() {
-    window.location.href = "http://127.0.0.1:5000/выйти/";
-         };
+    document.getElementById("exit").onclick = function () {
+        window.location.href = "http://127.0.0.1:5000/выйти/";
+    };
 </script>
 </body>
 </html>
