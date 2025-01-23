@@ -154,7 +154,7 @@ def plan_admin_post():
     name_item = request.form['name_item']
     quantity = request.form['quantity']
     supplier = request.form['supplier']
-    price = requst.form['price']
+    price = request.form['price']
     db_ses.add(Procurements(name=name_item, count=quantity, supplier=supplier, price=price))
     db_ses.commit()
 
@@ -177,7 +177,8 @@ def application_list_admin():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
         applications = db_ses.query(Applications).filter_by(inventId=cur_user.id)
-        return render_template('application_list_admin.html', applications=applications)
+        print(applications)
+        return render_template('application_list_admin.html', inventory=applications)
     return "", 403
 
 

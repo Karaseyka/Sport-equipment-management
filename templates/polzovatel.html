@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Учет школьного инвентаря</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/user_style.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -123,7 +124,7 @@
     </form>
 </nav>
 <div class="container inventory-list">
-    <h2 align="center">Доступное Вам</h2>
+    <h2 class="page-header" align="center">Доступное Вам</h2>
     <div class="row">
         <div class="col-sm-12">
             {% for item in inventory %}
