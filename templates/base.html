@@ -48,7 +48,7 @@
             font-size: 2rem;
             font-style: oblique;
             font-weight: bold;
-            border: 2px solid #ced4da;
+            border: 3px solid #ced4da;
             border-radius: 12px;
             margin: 5px;
             padding: 1px 15px 3px 15px;
@@ -72,8 +72,6 @@
             text-decoration: none;
             transition: 0.1s;
             margin: 10px 5px;
-            # border-right: 2px solid #eeeeee;
-            # border-left: 1px solid #eeeeee;
         }
 
         .nav-link-tab:hover {
@@ -113,28 +111,36 @@
             vertical-align: 45px;
             font-size: 1.5rem;
         }
+        .delimiter {
+            background-color: white;
+            color: transparent;
+            margin-top: 7px;
+            margin-bottom: 7px;
+            width: 2px;
+        }
 
+        .nav-item {
+            margin-left: 0px;
+            width: 320px;
+        }
 
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand">Ваш менеджер</a>
-        <div class="collapse navbar-collapse " id="navbarColor02">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a href="/add_users/" class="nav-link-tab">Добавить пользователя</a></li>
-                <li class="nav-item"><a class="nav-link" style="background-color: white; padding: 26px 1px; margin-top: 10px"></a></li>
-                <li class="nav-item"><a href="/plan_admin/" class="nav-link-tab">План закупок</a></li>
-                <li class="nav-item"><a class="nav-link" style="background-color: white; padding: 26px 1px; margin-top: 10px"></a></li>
-                <li class="nav-item"><a href="/list_admin/" class="nav-link-tab">Список пользоваелей инвентаря</a></li>
-                <li class="nav-item"><a class="nav-link" style="background-color: white; padding: 26px 1px; margin-top: 10px"></a></li>
-                <li class="nav-item"><a href="/application_list/" class="nav-link-tab">Заявки пользователей</a></li>
-            </ul>
-        </div>
-        <span>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4" style="display: flex; justify-content: space-between;">
+    <div style="display: flex; justify-content: space-around;">
+        <a href="/profile/" class="navbar-brand" style="margin-left: 12px">Ваш менеджер</a>
+        <a href="/add_users/" class="nav-link-tab">Добавить пользователя</a>
+        <p class="delimiter">|</p>
+        <a href="/plan_admin/" class="nav-link-tab">План закупок</a>
+        <p class="delimiter">|</p>
+        <a href="/list_admin/" class="nav-link-tab">Список пользоваелей инвентаря</a>
+        <p class="delimiter">|</p>
+        <a href="/application_list/" class="nav-link-tab">Заявки пользователей</a>
+    </div>
+    <div style="display: flex; justify-content: space-around;">
         <a href="/profile/" class="nav-link active">{{name}}</a>
-      </span>
+        <button class="btn btn-outline-light" type="button" id="exit" style="margin-left: 15px; margin-right: 15px">Выйти</button>
     </div>
 </nav>
 
