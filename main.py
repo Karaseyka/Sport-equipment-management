@@ -143,7 +143,8 @@ def add_users():
 def plan_admin_get():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
-        return render_template('plan_admin.html', name=cur_user.name)
+        inventory = db_ses.query(Procurements).all()
+        return render_template('plan_admin.html', name=cur_user.name, inventory=inventory)
     return "", 403
 
 
