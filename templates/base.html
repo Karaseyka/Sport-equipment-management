@@ -46,13 +46,13 @@
         }
 
         .navbar-brand {
-            font-size: 25px;
+            font-size: 30px;
             font-style: oblique;
             font-weight: bold;
             border: 3px solid #ced4da;
             border-radius: 12px;
             margin: 5px;
-            padding: 5px 15px 1px 15px;
+            padding: 5px 15px 7px 15px;
             display: flex;
         }
 
@@ -118,7 +118,7 @@
             color: transparent;
             margin-top: 13px;
             margin-bottom: 13px;
-            width: 2px;
+            width: 0.7px;
         }
 
         .nav-item {
@@ -128,15 +128,17 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4" style="display: flex; justify-content: space-between;">
-    <div style="display: flex; justify-content: space-around;">
+    <div style="display: flex; justify-content: start; align-items: center;">
         <a href="/profile/" class="navbar-brand" style="margin-left: 12px">Ваш менеджер</a>
-        <a href="/add_users/" class="nav-link-tab">Добавить пользователя</a>
-        <p class="delimiter">|</p>
-        <a href="/plan_admin/" class="nav-link-tab">План закупок</a>
-        <p class="delimiter">|</p>
-        <a href="/list_admin/" class="nav-link-tab">Список пользоваелей инвентаря</a>
-        <p class="delimiter">|</p>
-        <a href="/application_list/" class="nav-link-tab">Заявки пользователей</a>
+        <div style="display: flex; justify-content: space-around;">
+            <a href="/add_users/" class="nav-link-tab">Добавить пользователя</a>
+            <p class="delimiter">|</p>
+            <a href="/plan_admin/" class="nav-link-tab">План закупок</a>
+            <p class="delimiter">|</p>
+            <a href="/list_admin/" class="nav-link-tab">Список пользоваелей инвентаря</a>
+            <p class="delimiter">|</p>
+            <a href="/application_list/" class="nav-link-tab">Заявки пользователей</a>
+        </div>
     </div>
     <div style="display: flex; justify-content: space-around;">
         <a href="/profile/" class="nav-link active">{{name}}</a>
