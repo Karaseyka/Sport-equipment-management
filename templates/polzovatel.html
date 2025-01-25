@@ -133,10 +133,8 @@
                 <div class="inventory-item">
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
-
-                    <button class="btn btn-primary" name="ItemName" id="open{{ item.name }}" value="{{ item.name }}">
-                        Взять на прокат
-                    </button>
+                    
+                    <button class="btn btn-primary" name="ItemName" id="open{{ item.name }}" value="{{ item.name }}">Взять напрокат</button>
                     <dialog id="myDialog{{ item.name }}">
                         <p>
                             <label>Введите количество товара</label>
@@ -152,6 +150,9 @@
                         </p>
                     </dialog>
                     <script>
+                        document.getElementById("exit").onclick = function() {
+                                window.location.href = "http://127.0.0.1:5000/register";
+                                 };
                         function openDialog() {
                             const button = document.getElementById('open{{ item.name }}');
                             if (button.textContent != "Взять на прокат") return;
@@ -164,6 +165,8 @@
                             const dialog = document.getElementById('myDialog{{ item.name }}');
                             dialog.close();
                         }
+
+
                         function sendData() {
                             const quantity = document.getElementById('quantity{{ item.name }}').value;
                             const opisanie = document.getElementById('opisanie{{ item.name }}').value;
@@ -181,7 +184,7 @@
                             };
                             fetch('/new_procurement/', {
                                 method: 'POST',
-                                headers: {'Content-Type': 'application/json'},
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(data)
                             }).then(response => {
                                 if (response.ok) {
@@ -189,14 +192,19 @@
                                     const button = document.getElementById('open{{ item.name }}');
                                     button.textContent = 'заявка оставлена';
                                     button.style.backgroundColor = 'green';
-                                } else alert('Ошибка при отправке данных ' + response.status);
+                                }
+                                else alert('Ошибка при отправке данных ' + response.status);
                             }).catch(error => {
                                 console.error('Ошибка:', error);
                             });
                         }
+
+
                         document.getElementById('open{{ item.name }}').addEventListener('click', openDialog);
                         document.getElementById('closeButton{{ item.name }}').addEventListener('click', closeDialog);
                         document.getElementById('submitButton{{ item.name }}').addEventListener('click', sendData);
+
+
                     </script>
                 </div>
             </div>
@@ -208,10 +216,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    document.getElementById("exit").onclick = function () {
-        window.location.href = "http://127.0.0.1:5000/выйти/";
-    };
-</script>
 </body>
 </html>
