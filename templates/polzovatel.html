@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Учет школьного инвентаря</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/user_style.css">
     <style>
         body {
@@ -121,6 +122,9 @@
 <nav class="navbar navbar-expand-md navbar-dark mb-4" style="display: flex; justify-content: space-between;">
     <div style="display: flex; justify-content: start; align-items: center;">
         <a href="/profile/" class="navbar-brand" style="margin-left: -6px">Ваш инвентарь</a>
+        <div style="display: flex; justify-content: space-around;">
+            <a href="/add_users/" class="nav-link-tab">Ваши заявки</a>
+        </div>
     </div>
     <div style="display: flex; justify-content: space-around;">
         <a href="/profile/" class="nav-link active">{{name}}</a>
