@@ -153,9 +153,10 @@ def profile_post():
 @login_required
 def new_procurement():
     sp = request.json
+    print(sp)
     cur_user = flask_login.current_user
     db_ses.add(
-        Applications(user=cur_user.id, status='ожидает действия', inventId=sp['id'], description=sp['opisanie'],
+        Applications(user=cur_user.name, status='ожидает действия', inventId=sp['id'], description=sp['opisanie'],
                      count=sp['quantity']))
     db_ses.commit()
     return "", 201
@@ -211,7 +212,10 @@ def application_list_admin():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
         applications = db_ses.query(Applications).join(Inventory, Applications.inventId == Inventory.id).filter(Inventory.admin == cur_user.id).all()
-        return render_template('application_list_admin.html', inventory=applications)
+        users = db_ses.query(User).all()
+        print(applications, 1)
+        print(users, 2)
+        return render_template('application_list_admin.html', inventory=applications, users=users)
     return "", 403
 
 
