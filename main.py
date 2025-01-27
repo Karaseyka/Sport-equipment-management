@@ -26,6 +26,9 @@ db_ses = db_session.create_session()
 
 # пример запроса в БД
 # db_ses.query(User).get(user_id)
+def getApplicationsOfAdmin(adminId):
+    applications = db_ses.query(Applications).join(Inventory, Applications.inventId == Inventory.id).filter(
+        Inventory.admin == adminId).all()
 
 # загрузка ползователя
 @manager.user_loader
