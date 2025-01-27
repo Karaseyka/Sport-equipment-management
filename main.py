@@ -262,16 +262,7 @@ def update_item():
     return render_template('admin.html')
 
 
-@app.route('/update-item-plan/', methods=['POST'])
-@login_required
-def update_item_plan():
-    data = request.json
-    name = data['name']
-    count = data['count']
-    db_ses.query(Procurements).update({'name': name, 'count': count})
-    db_ses.commit()
 
-    return render_template('plan_admin.html')
 
 
 @app.route("/выйти/", methods=["GET"])

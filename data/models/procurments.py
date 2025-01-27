@@ -10,7 +10,7 @@ from data.database.db_session import SqlAlchemyBase
 class Procurements(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'procurements'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    admin = sqlalchemy.Column(sqlalchemy.Integer,  ForeignKey('User.id'))
+    admin = sqlalchemy.Column(sqlalchemy.Integer)
     name = sqlalchemy.Column(sqlalchemy.String)
     count = sqlalchemy.Column(sqlalchemy.Integer)
     price = sqlalchemy.Column(sqlalchemy.Integer)
