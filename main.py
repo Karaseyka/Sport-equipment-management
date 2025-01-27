@@ -84,7 +84,8 @@ def delete_item_plan():
     print(type(item_id), item_id, item)
     db_ses.delete(item)
     db_ses.commit()
-    return redirect("/profile")
+    return redirect ("/profile")
+
 
 
 @app.route('/update-item-plan/', methods=['POST'])
@@ -94,10 +95,14 @@ def update_item_plan():
     id = data['id']
     name = data['name']
     count = data['count']
+    supplier = data['supplier']
+    price = data['price']
     invent_item = db_ses.query(Procurements).get(id)
     if invent_item:
         invent_item.name = name
         invent_item.count = count
+        invent_item.supplier = supplier
+        invent_item.price = price
         db_ses.commit()
 
     return render_template('plan_admin.html')
