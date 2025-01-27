@@ -11,3 +11,5 @@ data/__pycache__/__all_models.cpython-313.pyc
 __pycache__/sqll.cpython-313.pyc
 .idea/Sport-equipment-management.iml
 /.idea
+data/instance/sportequip.db
+data/instance/sportequip.db
