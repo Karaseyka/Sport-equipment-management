@@ -142,9 +142,7 @@
                     {% if item.id in appid %}
                     <button class="btn btn-success" disabled>Заявка оставлена</button>
                     {% else %}
-                    <button class="btn btn-primary" name="ItemName" id="open{{ item.id }}" value="{{ item.id }}">Взять
-                        напрокат
-                    </button>
+                    <button class="btn btn-primary" name="ItemName" id="open{{ item.id }}" value="{{ item.id }}">Взять напрокат</button>
                     <dialog id="myDialog{{ item.id }}">
                         <p>
                             <label>Введите количество товара</label>
@@ -159,63 +157,64 @@
                             <button id="submitButton{{ item.id }}">Отправить</button>
                         </p>
                     </dialog>
-                    <script>
-                            document.getElementById("exit").onclick = function() {
-                                window.location.href = "http://127.0.0.1:5000/register";
-                            };
-
-                            function openDialog() {
-                                const button = document.getElementById('open{{ item.id }}');
-                                if (button.textContent != "Взять напрокат") return;
-                                const dialog = document.getElementById('myDialog{{ item.id }}');
-                                dialog.showModal();
-                            }
-
-                            function closeDialog() {
-                                const dialog = document.getElementById('myDialog{{ item.id }}');
-                                dialog.close();
-                            }
-
-                            function sendData() {
-                                const quantity = document.getElementById('quantity{{ item.id }}').value;
-                                const opisanie = document.getElementById('opisanie{{ item.id }}').value;
-                                const dialog = document.getElementById('myDialog{{ item.id }}');
-
-                                if (Number(quantity) > Number("{{ item.count }}") || quantity < 1) {
-                                    alert("некорректное число");
-                                    return;
-                                }
-
-                                const data = {
-                                    quantity: quantity,
-                                    opisanie: opisanie,
-                                    name: "{{ item.name }}"
-                                };
-                                fetch('/new_procurement/', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(data)
-                                }).then(response => {
-                                    if (response.ok) {
-                                        dialog.close();
-                                        const button = document.getElementById('open{{ item.id }}');
-                                        button.textContent = 'заявка оставлена';
-                                        button.style.backgroundColor = 'green';
-                                        button.disabled = true;
-                                    }
-                                    else alert('Ошибка при отправке данных ' + response.status);
-                                }).catch(error => {
-                                    console.error('Ошибка:', error);
-                                });
-                            }
-
-                            document.getElementById('open{{ item.id }}').addEventListener('click', openDialog);
-                            document.getElementById('closeButton{{ item.id }}').addEventListener('click', closeDialog);
-                            document.getElementById('submitButton{{ item.id }}').addEventListener('click', sendData);
-
-                    </script>
                     {% endif %}
                 </div>
+                <script>
+                    document.getElementById("exit").onclick = function() {
+                        window.location.href = "http://127.0.0.1:5000/register";
+                    };
+
+                    function openDialog() {
+                        const button = document.getElementById('open{{ item.id }}');
+
+                        if (button.textContent != "Взять напрокат") return;
+                        const dialog = document.getElementById('myDialog{{ item.id }}');
+                        dialog.showModal();
+                    }
+
+                    function closeDialog() {
+                        const dialog = document.getElementById('myDialog{{ item.id }}');
+                        dialog.close();
+                    }
+
+                    function sendData() {
+                        const quantity = document.getElementById('quantity{{ item.id }}').value;
+                        const opisanie = document.getElementById('opisanie{{ item.id }}').value;
+                        const dialog = document.getElementById('myDialog{{ item.id }}');
+
+                        if (Number(quantity) > Number("{{ item.count }}") || quantity < 1) {
+                            alert("некорректное число");
+                            return;
+                        }
+
+                        const data = {
+                            quantity: quantity,
+                            opisanie: opisanie,
+                            id: "{{ item.id }}"
+                        };
+                        fetch('/new_procurement/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        }).then(response => {
+                            if (response.ok) {
+                                dialog.close();
+                                const button = document.getElementById('open{{ item.id }}');
+                                button.textContent = 'заявка оставлена';
+                                button.style.backgroundColor = 'green';
+                                button.disabled = true;
+                            }
+                            else alert('Ошибка при отправке данных ' + response.status);
+                        }).catch(error => {
+                            console.error('Ошибка:', error);
+                        });
+                    }
+
+                    document.getElementById('open{{ item.id }}').addEventListener('click', openDialog);
+                    document.getElementById('closeButton{{ item.id }}').addEventListener('click', closeDialog);
+                    document.getElementById('submitButton{{ item.id }}').addEventListener('click', sendData);
+
+                </script>
             </div>
             {% endfor %}
         </div>

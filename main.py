@@ -147,7 +147,7 @@ def new_procurement():
     sp = request.json
     cur_user = flask_login.current_user
     db_ses.add(
-        Applications(user=cur_user.id, status='ожидает действия', inventId=sp['name'], description=sp['opisanie'],
+        Applications(user=cur_user.id, status='ожидает действия', inventId=sp['id'], description=sp['opisanie'],
                      count=sp['quantity']))
     db_ses.commit()
     return "", 201
@@ -168,7 +168,7 @@ def add_users():
 def plan_admin_get():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
-        inventory = db_ses.query(Procurements).all()
+        inventory = db_ses.query(Procurements).filter_by(admin=cur_user.id).all()
         return render_template('plan_admin.html', name=cur_user.name, inventory=inventory)
     return "", 403
 
@@ -181,7 +181,7 @@ def plan_admin_post():
     quantity = request.form['quantity']
     supplier = request.form['supplier']
     price = request.form['price']
-    db_ses.add(Procurements(name=name_item, count=quantity, supplier=supplier, price=price))
+    db_ses.add(Procurements(name=name_item, count=quantity, supplier=supplier, price=price, admin=cur_user.id))
     db_ses.commit()
 
     return redirect('/plan_admin/')
@@ -202,8 +202,7 @@ def list_admin():
 def application_list_admin():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
-        applications = db_ses.query(Applications).all()
-        print(applications)
+        applications = db_ses.query(Applications).join(Inventory, Applications.inventId == Inventory.id).filter(Inventory.admin == cur_user.id).all()
         return render_template('application_list_admin.html', inventory=applications)
     return "", 403
 

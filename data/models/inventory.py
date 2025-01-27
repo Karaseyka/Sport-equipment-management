@@ -1,5 +1,6 @@
 import sqlalchemy
 from flask_login import UserMixin
+from sqlalchemy import ForeignKey
 
 from sqlalchemy_serializer import SerializerMixin
 
