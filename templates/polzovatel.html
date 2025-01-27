@@ -137,19 +137,19 @@
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
                     
-                    <button class="btn btn-primary" name="ItemName" id="open{{ item.name }}" value="{{ item.name }}">Взять напрокат</button>
-                    <dialog id="myDialog{{ item.name }}">
+                    <button class="btn btn-primary" name="ItemName" id="open{{ item.id }}" value="{{ item.id }}">Взять напрокат</button>
+                    <dialog id="myDialog{{ item.id }}">
                         <p>
                             <label>Введите количество товара</label>
-                            <input type="number" name="quantity" id="quantity{{ item.name }}"/>
+                            <input type="number" name="quantity" id="quantity{{ item.id }}"/>
                         </p>
                         <p>
                             <label>Введите описание для заявки</label>
-                            <input type="text" name="opisanie" id="opisanie{{ item.name }}"/>
+                            <input type="text" name="opisanie" id="opisanie{{ item.id }}"/>
                         </p>
                         <p>
-                            <button id="closeButton{{ item.name }}">Закрыть окно</button>
-                            <button id="submitButton{{ item.name }}">Отправить</button>
+                            <button id="closeButton{{ item.id }}">Закрыть окно</button>
+                            <button id="submitButton{{ item.id }}">Отправить</button>
                         </p>
                     </dialog>
                     <script>
@@ -157,23 +157,23 @@
                                 window.location.href = "http://127.0.0.1:5000/register";
                                  };
                         function openDialog() {
-                            const button = document.getElementById('open{{ item.name }}');
-                            if (button.textContent != "Взять на прокат") return;
-                            const dialog = document.getElementById('myDialog{{ item.name }}');
+                            const button = document.getElementById('open{{ item.id }}');
+                            if (button.textContent != "Взять напрокат") return;
+                            const dialog = document.getElementById('myDialog{{ item.id }}');
                             dialog.showModal();
                         }
 
 
                         function closeDialog() {
-                            const dialog = document.getElementById('myDialog{{ item.name }}');
+                            const dialog = document.getElementById('myDialog{{ item.id }}');
                             dialog.close();
                         }
 
 
                         function sendData() {
-                            const quantity = document.getElementById('quantity{{ item.name }}').value;
-                            const opisanie = document.getElementById('opisanie{{ item.name }}').value;
-                            const dialog = document.getElementById('myDialog{{ item.name }}');
+                            const quantity = document.getElementById('quantity{{ item.id }}').value;
+                            const opisanie = document.getElementById('opisanie{{ item.id }}').value;
+                            const dialog = document.getElementById('myDialog{{ item.id }}');
 
                             if (Number(quantity) > Number("{{ item.count }}") || quantity < 1) {
                                 alert("некоректное число");
@@ -192,7 +192,7 @@
                             }).then(response => {
                                 if (response.ok) {
                                     dialog.close();
-                                    const button = document.getElementById('open{{ item.name }}');
+                                    const button = document.getElementById('open{{ item.id }}');
                                     button.textContent = 'заявка оставлена';
                                     button.style.backgroundColor = 'green';
                                 }
@@ -203,9 +203,9 @@
                         }
 
 
-                        document.getElementById('open{{ item.name }}').addEventListener('click', openDialog);
-                        document.getElementById('closeButton{{ item.name }}').addEventListener('click', closeDialog);
-                        document.getElementById('submitButton{{ item.name }}').addEventListener('click', sendData);
+                        document.getElementById('open{{ item.id }}').addEventListener('click', openDialog);
+                        document.getElementById('closeButton{{ item.id }}').addEventListener('click', closeDialog);
+                        document.getElementById('submitButton{{ item.id }}').addEventListener('click', sendData);
 
 
                     </script>
