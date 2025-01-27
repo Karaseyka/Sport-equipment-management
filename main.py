@@ -76,6 +76,31 @@ def register_post():
 def register_get():
     return render_template('register.html')
 
+@app.route('/delete-item-plan/', methods=['POST'])
+@login_required
+def delete_item_plan():
+    item_id = request.json.get('id')
+    item = db_ses.query(Procurements).get(item_id)
+    print(type(item_id), item_id, item)
+    db_ses.delete(item)
+    db_ses.commit()
+    return redirect("/profile")
+
+
+@app.route('/update-item-plan/', methods=['POST'])
+@login_required
+def update_item_plan():
+    data = request.json
+    id = data['id']
+    name = data['name']
+    count = data['count']
+    invent_item = db_ses.query(Procurements).get(id)
+    if invent_item:
+        invent_item.name = name
+        invent_item.count = count
+        db_ses.commit()
+
+    return render_template('plan_admin.html')
 
 @app.route("/profile/", methods=["GET"])
 @login_required
