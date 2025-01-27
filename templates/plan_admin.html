@@ -9,8 +9,11 @@
                     <td><input type="text" class="form-control" name="supplier" placeholder="Поставщик" required></td>
                     <td><input type="text" class="form-control" name="name_item" placeholder="Название" required></td>
                     <td><input type="number" class="form-control" name="price" placeholder="Цена" required></td>
-                    <td><input type="number" class="form-control" name="quantity" placeholder="Количество" required></td>
-                    <td><button class="btn btn-primary">Подтвердить</button></td>
+                    <td><input type="number" class="form-control" name="quantity" placeholder="Количество" required>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary">Подтвердить</button>
+                    </td>
                 </form>
             </tr>
         </table>
@@ -28,6 +31,9 @@
                 <button class="btn btn-primary" onclick="toggleEditMode('{{ item.id }}', this)" data-editing="false">
                     Изменить
                 </button>
+                <button class="btn btn-danger" onclick="deleteItem('{{ item.id }}', this)"
+                        data-editing="false">Удалить
+                </button>
             </div>
         </div>
         {% endfor %}
@@ -41,6 +47,38 @@
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
 <script>
+function deleteItem(itemId, button) {
+       fetch(`/delete-item-plan/`, {
+         method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: itemId
+            })
+    })
+    .then(response => {
+    if (response.ok) {
+
+        window.location.reload();
+      }
+        if (!response.ok) {
+            throw new Error('Ошибка при удалении элемента');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Элемент успешно удален:', data);
+        const itemElement = button.closest('.inventory-item');
+        if (itemElement) {
+            itemElement.remove();
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
     function toggleEditMode(id, button) {
         const isEditing = button.dataset.editing === "true";
 
@@ -92,7 +130,7 @@
             body: JSON.stringify({
                 id: id,
                 name: newName,
-
+                count: newCount,
             })
         })
             .then(response => {
@@ -114,6 +152,8 @@
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
         return csrfToken ? csrfToken.value : '';
     }
+
+
 </script>
 
 {% endblock %}
