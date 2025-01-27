@@ -10,9 +10,7 @@
     padding: 10px 20px;
     width: auto;
 }
-.base {
-    margin-bottom: 15px;
-}
-td {
-    padding-right: 7px;
+.navbar {
+    height: 80px;
+    background-color: #0d6efd;
 }

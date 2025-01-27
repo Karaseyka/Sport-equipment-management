@@ -10,6 +10,10 @@
     padding: 10px 20px;
     width: auto;
 }
+.navbar {
+    height: 80px;
+    background-color: #0b9ebb;
+}
 .base {
     margin-bottom: 15px;
 }
@@ -18,4 +22,7 @@ td {
 }
 .btn-primary {
     background-color: #0b9ebb;
+}
+.btn-primary:hover {
+    background-color: #0a7f96;
 }
