@@ -177,7 +177,7 @@ def list_admin():
 def application_list_admin():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
-        applications = db_ses.query(Applications).filter_by(inventId=cur_user.id)
+        applications = db_ses.query(Applications).all()
         print(applications)
         return render_template('application_list_admin.html', inventory=applications)
     return "", 403
