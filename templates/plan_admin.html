@@ -130,7 +130,7 @@ function deleteItem(itemId, button) {
             body: JSON.stringify({
                 id: id,
                 name: newName,
-
+                count: newCount,
             })
         })
             .then(response => {
