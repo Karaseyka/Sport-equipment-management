@@ -15,21 +15,51 @@
             <div class="col-12">
                 <div class="user-item" id="user-{{ user.id }}">
                     <h5>{{ user.name }}</h5>
-                    <button class="btn btn-primary" onclick="deleteUser({{ user.id }})">Удалить пользователя</button>
+                    <button class="btn btn-primary" onclick="deleteUser('{{ user.id }}', this)">Удалить пользователя</button>
                 </div>
             </div>
         {% endfor %}
     </div>
 </div>
-    <script>
-        function deleteUser(userId) {
-        fetch('/delete-user/', {
-            headers: {'Content-Type': 'application/json'},
+<script>
+    function deleteUser(itemId, button) {
+        fetch(`/delete-user/`, {
             method: 'POST',
-            body: JSON.stringify({id: userId})
-        }).then(async function(response) {
-            if (response.status == 201) document.getElementById('user-' + userId).remove();
-        });
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: itemId
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+
+                    window.location.reload();
+                }
+                if (!response.ok) {
+                    throw new Error('Ошибка при удалении элемента');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (response.ok) {
+                    document.getElementById(`user-${userId}`).remove();
+                } else {
+                    alert("Ошибка при удалении!");
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
     }
-    </script>
+
+
+    function getCSRFToken() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        return csrfToken ? csrfToken.value : '';
+    }
+
+</script>
 {% endblock %}

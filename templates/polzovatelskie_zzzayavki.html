@@ -1,8 +1,7 @@
-<!--Изначально это копия plan_admin.html-->
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h2 class="page-header" style="margin-left: 480px; margin-right: 480px; margin-top: 40px; display: flex; justify-content: center">Входящие</h2>
+    <h2 class="page-header" style="margin-left: 480px; margin-right: 480px; margin-top: 40px; display: flex; justify-content: center">Исходящие заявки</h2>
     <div class="col-sm-12">
         {% for item in inventory %}
         <div class="col-md-28">
@@ -14,8 +13,6 @@
                 <p>Количество: {{ item.count }}</p>
                 <p>Сообщение: {{ item.description }}</p>
                 <p>{{ item.status }}</p>
-                <button class="btn btn-success" onclick="" data-editing="false">Принять</button>
-                <button class="btn btn-danger" onclick="" data-editing="false">Отклонить</button>
             </div>
         </div>
         {% endfor %}
