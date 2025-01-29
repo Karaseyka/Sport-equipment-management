@@ -238,7 +238,12 @@ def delete_item():
 @app.route('/polzovatelskie_zzzayavki/', methods=['GET'])
 @login_required
 def polzovatelskie_zzzayavki_get():
-    return render_template('polzovatelskie_zzzayavki.html')
+    cur_user = flask_login.current_user
+    applications = db_ses.query(Applications).filter_by(user=cur_user.name).all()
+    print(applications)
+    inventory = db_ses.query(Inventory).all()
+    print(inventory)
+    return render_template('polzovatelskie_zzzayavki.html', applications=applications, inventory=inventory)
 
 
 @app.route('/delete-user/', methods=['POST'])
