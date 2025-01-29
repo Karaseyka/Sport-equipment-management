@@ -165,7 +165,7 @@ def profile_post():
 
     else:
         name_item = request.form['ItemName']
-        db_ses.add(Applications(user=cur_user.id, status='ожидает действия', inventId=name_item))
+        db_ses.add(Applications(user=cur_user.id, status='ожидает подтверждения', inventId=name_item))
         db_ses.commit()
 
     return redirect("/profile/")
@@ -177,7 +177,7 @@ def new_procurement():
     sp = request.json
     cur_user = flask_login.current_user
     db_ses.add(
-        Applications(user=cur_user.name, status='ожидает действия', inventId=sp['id'], description=sp['opisanie'],
+        Applications(user=cur_user.name, status='ожидает подтверждения', inventId=sp['id'], description=sp['opisanie'],
                      count=sp['quantity']))
     db_ses.commit()
     return "", 201
@@ -267,7 +267,7 @@ def polzovatelskie_zzzayavki_get():
     print(applications)
     inventory = db_ses.query(Inventory).all()
     print(inventory)
-    return render_template('polzovatelskie_zzzayavki.html', applications=applications, inventory=inventory)
+    return render_template('polzovatelskie_zzzayavki.html', applications=applications, inventory=inventory, name=cur_user.name)
 
 
 @app.route('/delete-user/', methods=['POST'])
@@ -303,7 +303,17 @@ def update_item():
 def delete_apply():
     zzzayavka_id = request.json.get('id')
     print(zzzayavka_id)
-    db_ses.query(Applications).filter_by(id=zzzayavka_id).update({'status': 'отказано в выдаче'})
+    db_ses.query(Applications).filter_by(id=zzzayavka_id).update({'status': 'отклонена'})
+    db_ses.commit()
+    return redirect("/application_list/")
+
+
+@app.route('/accept-apply/', methods=['POST'])
+@login_required
+def accept_apply():
+    zzzayavka_id = request.json.get('id')
+    print(zzzayavka_id)
+    db_ses.query(Applications).filter_by(id=zzzayavka_id).update({'status': 'одобрена'})
     db_ses.commit()
     return redirect("/application_list/")
 
