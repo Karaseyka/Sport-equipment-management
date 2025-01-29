@@ -280,7 +280,7 @@ def update_item():
 def delete_apply():
     zzzayavka_id = request.json.get('id')
     print(zzzayavka_id)
-    db_ses.query(Applications).filter_by(id=zzzayavka_id).update({'status': 'Отказано в выдаче'})
+    db_ses.query(Applications).filter_by(id=zzzayavka_id).update({'status': 'отказано в выдаче'})
     db_ses.commit()
     return redirect("/application_list/")
 
