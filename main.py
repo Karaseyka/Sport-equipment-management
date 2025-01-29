@@ -12,6 +12,8 @@ from data.models.applications import Applications
 from requests import get
 import re
 from sqll import *
+import io
+import csv
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -29,6 +31,7 @@ db_ses = db_session.create_session()
 def getApplicationsOfAdmin(adminId):
     applications = db_ses.query(Applications).join(Inventory, Applications.inventId == Inventory.id).filter(
         Inventory.admin == adminId).all()
+    return applications
 
 # загрузка ползователя
 @manager.user_loader
@@ -109,6 +112,26 @@ def update_item_plan():
         db_ses.commit()
 
     return render_template('plan_admin.html')
+
+
+@app.route("/get_report/", methods=["GET"])
+@login_required
+def get_report():
+    file = io.StringIO()
+    writer = csv.writer(file, delimiter=";")
+    writer.writerow(['предмет', 'количество', 'пользователь', 'статус'])
+    for i in getApplicationsOfAdmin(flask_login.current_user.id):
+        writer.writerow([db_ses.query(Inventory).get(i.inventId).name, i.count, i.user, i.status])
+    file.seek(0)
+    mem = io.BytesIO()
+    mem.write(file.getvalue().encode('Windows-1251'))
+    mem.seek(0)
+    return send_file(
+        mem,
+        as_attachment=True,
+        download_name='залупень.csv'
+    )
+
 
 @app.route("/profile/", methods=["GET"])
 @login_required
