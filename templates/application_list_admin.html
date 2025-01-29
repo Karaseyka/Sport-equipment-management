@@ -1,5 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    .rejected-message {
+        border: 2px solid red;
+        color: red;
+        background-color: #ffe6e6;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    .accepted-message {
+        border: 2px solid green;
+        color: green;
+        background-color: #e6ffe6;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+</style>
+
 <div class="container">
     <h2 class="page-header" style="margin: 40px auto; display: flex; justify-content: center">Входящие</h2>
     <div class="col-sm-12">
@@ -16,21 +40,26 @@
                 <p>Количество: {{ item.count }}</p>
                 <p>Сообщение: {{ item.description }}</p>
                 <div class="action-buttons">
-                    <button class="btn btn-success accept-btn" onclick="accepted('{{ item.id }}', this)">Принять</button>
-                    <button class="btn btn-danger reject-btn" onclick="rejected('{{ item.id }}', this)">Отклонить</button>
+                    <button class="btn btn-success accept-btn" data-id="{{ item.id }}">Принять</button>
+                    <button class="btn btn-danger reject-btn" data-id="{{ item.id }}">Отклонить</button>
                 </div>
-
+                <div class="accepted-message" style="display: none;"></div> <!-- Добавлено для отображения сообщения о принятии -->
+                <div class="rejected-message" style="display: none;"></div> <!-- Добавлено для отображения сообщения об отклонении -->
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
 
-
 <script>
-    function rejected(itemId, button) {
-       fetch(`/delete-apply/`, {
-         method: 'POST',
+    function getCSRFToken() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        return csrfToken ? csrfToken.value : '';
+    }
+
+    function accepted(itemId, button) {
+        fetch(`/accept-apply/`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCSRFToken()
@@ -38,32 +67,67 @@
             body: JSON.stringify({
                 id: itemId
             })
-    })
-    .then(response => {
-    if (response.ok) {
-
-        window.location.reload();
-      }
-        if (!response.ok) {
-            throw new Error('Ошибка при отклонении заявки');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Заявка успешно отклонена:', data);
-
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-    });
-}
-
-
-function getCSRFToken() {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-        return csrfToken ? csrfToken.value : '';
+        })
+        .then(response => {
+            if (response.ok) {
+                const parentDiv = button.parentNode;
+                const acceptedMessageDiv = parentDiv.nextElementSibling; // Получаем div для сообщения о принятии
+                acceptedMessageDiv.textContent = 'Заявка принята';
+                acceptedMessageDiv.style.display = 'block'; // Показываем сообщение
+                parentDiv.innerHTML = ''; // Очищаем кнопки
+            } else {
+                throw new Error('Ошибка при сохранении заявки');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
     }
+
+    function rejected(itemId, button) {
+        fetch(`/delete-apply/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: itemId
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                const parentDiv = button.parentNode;
+                const rejectedMessageDiv = parentDiv.nextElementSibling.nextElementSibling; // Получаем div для сообщения об отклонении
+                rejectedMessageDiv.textContent = 'Заявка отклонена';
+                rejectedMessageDiv.style.display = 'block'; // Показываем сообщение
+                parentDiv.innerHTML = ''; // Очищаем кнопки
+            } else {
+                throw new Error('Ошибка при отклонении заявки');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.accept-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const itemId = this.getAttribute('data-id');
+                accepted(itemId, this);
+            });
+        });
+
+        document.querySelectorAll('.reject-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const itemId = this.getAttribute('data-id');
+                rejected(itemId, this);
+            });
+        });
+    });
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
