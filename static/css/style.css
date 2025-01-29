@@ -76,8 +76,25 @@
     width: 320px;
 }
 
+@font-face {
+    font-family: "Minecraft Title Cyrillic Regular";
+    src: url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.eot"); /* IE9 Compat Modes */
+    src: url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.otf") format("opentype"), /* Open Type Font */
+    url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.svg") format("svg"), /* Legacy iOS */
+    url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.ttf") format("truetype"), /* Safari, Android, iOS */
+    url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.woff") format("woff"), /* Modern Browsers */
+    url("../fonts/minecraft-title-cyrillic-regular/minecraft-title-cyrillic-regular.woff2") format("woff2"); /* Modern Browsers */
+    font-weight: normal;
+    font-style: normal;
+}
 body {
-    background-color: #f8f9fa;
+    font-family: "Minecraft Title Cyrillic Regular", serif;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.2;
+    color: #000;
+    background-color: #fff;
 }
 
 .header {
