@@ -13,13 +13,13 @@
                 {% endfor %}
                 <p>Количество предметов: {{ item.count }}</p>
                 <p>Описание: {{ item.description }}</p>
-                {% if item.status == "одобрено. Готов к выдаче" %}
+                {% if item.status == "одобрена" %}
                 <p id="success-text">{{ item.status }}</p>
                 {% endif %}
-                {% if item.status == "отказано в выдаче" %}
+                {% if item.status == "отклонена" %}
                 <p id="danger-text">{{ item.status }}</p>
                 {% endif %}
-                {% if item.status == "ожидает действия" %}
+                {% if item.status == "ожидает подтверждения" %}
                 <p id="waiting-text">{{ item.status }}</p>
                 {% endif %}
             </div>
