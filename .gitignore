@@ -1,2 +1,4 @@
 __pycache__/
 /data/instance/
+/.idea/
+/.venv/
