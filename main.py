@@ -236,6 +236,11 @@ def delete_item():
     db_ses.commit()
     return redirect ("/profile")
 
+@app.route('/polzovatelskie_zzzayavki/', methods=['GET'])
+@login_required
+def polzovatelskie_zzzayavki_get():
+    return render_template('polzovatelskie_zzzayavki.html')
+
 
 @app.route('/delete-user/', methods=['POST'])
 @login_required
