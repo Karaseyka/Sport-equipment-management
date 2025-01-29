@@ -210,7 +210,8 @@ def application_list_admin_get():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
         applications = db_ses.query(Applications).join(Inventory, Applications.inventId == Inventory.id).filter(Inventory.admin == cur_user.id).all()
-        return render_template('application_list_admin.html', inventory=applications)
+        inventory = db_ses.query(Inventory).all()
+        return render_template('application_list_admin.html', applications=applications, inventory=inventory)
     return "", 403
 
 
@@ -274,7 +275,14 @@ def update_item():
     return render_template('admin.html')
 
 
-
+@app.route('/delete-apply/', methods=['POST'])
+@login_required
+def delete_apply():
+    zzzayavka_id = request.json.get('id')
+    print(zzzayavka_id)
+    db_ses.query(Applications).filter_by(id=zzzayavka_id).update({'status': 'Отказано в выдаче'})
+    db_ses.commit()
+    return redirect("/application_list/")
 
 
 @app.route("/выйти/", methods=["GET"])

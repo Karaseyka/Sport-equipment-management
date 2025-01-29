@@ -3,12 +3,16 @@
 <div class="container">
     <h2 class="page-header" style="margin: 40px auto; display: flex; justify-content: center">Входящие</h2>
     <div class="col-sm-12">
-        {% for item in inventory %}
+        {% for item in applications %}
         <div class="col-md-28">
             <div class="inventory-item" data-request-id="{{ item.id }}">
                 <h5>{{ item.name }}</h5>
                 <p>Заявитель: {{ item.user }}</p>
-                <p>Предмет:</p>
+                {% for q in inventory %}
+                    {% if q.id == item.inventId %}
+                        <p>Предмет:  {{ q.name }}</p>
+                    {%endif%}
+                {%endfor%}
                 <p>Количество: {{ item.count }}</p>
                 <p>Сообщение: {{ item.description }}</p>
                 <div class="action-buttons">
