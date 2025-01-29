@@ -244,7 +244,7 @@ def polzovatelskie_zzzayavki_get():
     print(applications)
     inventory = db_ses.query(Inventory).all()
     print(inventory)
-    return render_template('polzovatelskie_zzzayavki.html', applications=applications, inventory=inventory)
+    return render_template('polzovatelskie_zzzayavki.html', applications=applications, inventory=inventory, name=cur_user.name)
 
 
 @app.route('/delete-user/', methods=['POST'])
