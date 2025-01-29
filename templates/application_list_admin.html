@@ -1,35 +1,69 @@
-<!--Изначально это копия plan_admin.html-->
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h2 class="page-header" style="margin-left: 480px; margin-right: 480px; margin-top: 40px; display: flex; justify-content: center">Входящие</h2>
+    <h2 class="page-header" style="margin: 40px auto; display: flex; justify-content: center">Входящие</h2>
     <div class="col-sm-12">
         {% for item in inventory %}
         <div class="col-md-28">
-            <div class="inventory-item">
-                <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
-                <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
+            <div class="inventory-item" data-request-id="{{ item.id }}">
+                <h5>{{ item.name }}</h5>
                 <p>Заявитель: {{ item.user }}</p>
                 <p>Предмет:</p>
                 <p>Количество: {{ item.count }}</p>
                 <p>Сообщение: {{ item.description }}</p>
-                <p>{{ item.status }}</p>
-                <button class="btn btn-success" onclick="" data-editing="false">Принять</button>
-                <button class="btn btn-danger" onclick="" data-editing="false">Отклонить</button>
+                <div class="action-buttons">
+                    <button class="btn btn-success accept-btn" onclick="accepted('{{ item.id }}', this)">Принять</button>
+                    <button class="btn btn-danger reject-btn" onclick="rejected('{{ item.id }}', this)">Отклонить</button>
+                </div>
+
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
-</div>
+
+
+<script>
+    function rejected(itemId, button) {
+       fetch(`/delete-apply/`, {
+         method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: itemId
+            })
+    })
+    .then(response => {
+    if (response.ok) {
+
+        window.location.reload();
+      }
+        if (!response.ok) {
+            throw new Error('Ошибка при отклонении заявки');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Заявка успешно отклонена:', data);
+
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+}
+
+
+function getCSRFToken() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        return csrfToken ? csrfToken.value : '';
+    }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
-<script>
-
-</script>
-
 {% endblock %}
