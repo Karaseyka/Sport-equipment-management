@@ -35,16 +35,20 @@
                 {% for q in inventory %}
                     {% if q.id == item.inventId %}
                         <p>Предмет:  {{ q.name }}</p>
-                    {%endif%}
-                {%endfor%}
+                    {% endif %}
+                {% endfor %}
                 <p>Количество: {{ item.count }}</p>
                 <p>Сообщение: {{ item.description }}</p>
                 <div class="action-buttons">
-                    <button class="btn btn-success accept-btn" data-id="{{ item.id }}">Принять</button>
-                    <button class="btn btn-danger reject-btn" data-id="{{ item.id }}">Отклонить</button>
+                    {% if item.status == "одобрена" %}
+                        <div class="accepted-message">Заявка принята</div>
+                    {% elif item.status == "отклонена" %}
+                        <div class="rejected-message">Заявка отклонена</div>
+                    {% elif item.status == "ожидает подтверждения" %}
+                        <button class="btn btn-success accept-btn" data-id="{{ item.id }}">Принять</button>
+                        <button class="btn btn-danger reject-btn" data-id="{{ item.id }}">Отклонить</button>
+                    {% endif %}
                 </div>
-                <div class="accepted-message" style="display: none;"></div> <!-- Добавлено для отображения сообщения о принятии -->
-                <div class="rejected-message" style="display: none;"></div> <!-- Добавлено для отображения сообщения об отклонении -->
             </div>
         </div>
         {% endfor %}
@@ -71,10 +75,10 @@
         .then(response => {
             if (response.ok) {
                 const parentDiv = button.parentNode;
-                const acceptedMessageDiv = parentDiv.nextElementSibling; // Получаем div для сообщения о принятии
+                const acceptedMessageDiv = parentDiv.querySelector('.accepted-message');
                 acceptedMessageDiv.textContent = 'Заявка принята';
-                acceptedMessageDiv.style.display = 'block'; // Показываем сообщение
-                parentDiv.innerHTML = ''; // Очищаем кнопки
+                acceptedMessageDiv.style.display = 'block';
+                parentDiv.innerHTML = '';
             } else {
                 throw new Error('Ошибка при сохранении заявки');
             }
@@ -98,10 +102,10 @@
         .then(response => {
             if (response.ok) {
                 const parentDiv = button.parentNode;
-                const rejectedMessageDiv = parentDiv.nextElementSibling.nextElementSibling; // Получаем div для сообщения об отклонении
+                const rejectedMessageDiv = parentDiv.querySelector('.rejected-message');
                 rejectedMessageDiv.textContent = 'Заявка отклонена';
-                rejectedMessageDiv.style.display = 'block'; // Показываем сообщение
-                parentDiv.innerHTML = ''; // Очищаем кнопки
+                rejectedMessageDiv.style.display = 'block';
+                parentDiv.innerHTML = '';
             } else {
                 throw new Error('Ошибка при отклонении заявки');
             }
