@@ -87,7 +87,7 @@ def delete_item_plan():
     print(type(item_id), item_id, item)
     db_ses.delete(item)
     db_ses.commit()
-    return redirect ("/profile")
+    return redirect("/profile")
 
 
 
@@ -116,15 +116,14 @@ def profile_get():
     cur_user = flask_login.current_user
     if cur_user.type == "user":
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.invent).all()
-        appid = db_ses.query(Applications).filter_by(user=cur_user.id).all()
-        appid = [i.id for i in appid]
-
+        appid1 = db_ses.query(Applications).filter_by(user=cur_user.name).all()
+        appid = [i.inventId for i in appid1]
+        print(appid)
         return render_template('polzovatel.html', name=cur_user.name, appid=appid, inventory=items_of_inventory,
-                               id=cur_user.id)
+                               id=cur_user.id, appid1=appid1)
     else:
 
         items_of_inventory = db_ses.query(Inventory).filter_by(admin=cur_user.id).all()
-
         return render_template('admin.html', name=cur_user.name, inventory=items_of_inventory)
 
 
@@ -205,9 +204,9 @@ def list_admin():
     return "", 403
 
 
-@app.route('/application_list/')
+@app.route('/application_list/', methods=['GET'])
 @login_required
-def application_list_admin():
+def application_list_admin_get():
     cur_user = flask_login.current_user
     if cur_user.type == "admin":
         applications = db_ses.query(Applications).join(Inventory, Applications.inventId == Inventory.id).filter(Inventory.admin == cur_user.id).all()
