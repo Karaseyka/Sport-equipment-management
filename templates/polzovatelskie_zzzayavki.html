@@ -3,18 +3,18 @@
 <div class="container">
     <h2 class="page-header" style="margin-left: 480px; margin-right: 480px; margin-top: 40px; display: flex; justify-content: center">Исходящие заявки</h2>
     <div class="col-sm-12">
-        {% for item in inventory %}
-        <div class="col-md-28">
+        {% for item in applications %}
+      <div class="col-md-14">
             <div class="inventory-item">
-                <h5 id="itemName{{ item.id }}">{{ item.name }}</h5>
-                <input type="text" id="editItemName{{ item.id }}" class="form-control d-none" value="{{ item.name }}"/>
-                <p>Заявитель: {{ item.user }}</p>
-                <p>Предмет:</p>
-                <p>Количество: {{ item.count }}</p>
-                <p>Сообщение: {{ item.description }}</p>
-                <p>{{ item.status }}</p>
+                {% for q in inventory %}
+                    {% if item.inventId == q.id %}
+                    <h5>{{ q.name }}</h5>
+                    {% endif %}
+                {% endfor %}
+                <p>Количество предметов: {{ item.count }}</p>
+                <p>Описание: {{ item.description }}</p>
+                <p>Статус: {{ item.status }}</p>
             </div>
-        </div>
         {% endfor %}
     </div>
 </div>
