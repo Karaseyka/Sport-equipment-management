@@ -26,3 +26,18 @@ td {
 .btn-primary:hover {
     background-color: #0a7f96;
 }
+
+#danger-text {
+    color: #fb5353;
+    font-weight: bold;
+}
+
+#success-text {
+    color: #43a815;
+    font-weight: bold;
+}
+
+#waiting-text {
+    color: #e7c42b;
+    font-weight: bold;
+}
