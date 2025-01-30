@@ -10,7 +10,7 @@
                     <h5>{{ item.name }}</h5>
                     <p>Количество предметов: {{ item.count }}</p>
 
-                    {% if item.id in appid %}
+                    {% if appid[item.id - 1] == 'ожидает действия' %}
                     <button class="btn btn-success" disabled>Заявка оставлена</button>
                     {% else %}
                     <button class="btn btn-primary" name="ItemName" id="open{{ item.id }}" value="{{ item.id }}">Взять напрокат</button>
