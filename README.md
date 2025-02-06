@@ -9,4 +9,6 @@
 3) Выполнить программу для установки требуемых библиотек
    pip install -r requirements.txt
 4) Запустить проект и перейти по локальному адрессу
-
+# Ссылки на документацию и видео
+1) Документация https://docs.google.com/document/d/1WwpsxYZNcDgl_f76OrdXiuaP4kRpvwF7DdXdQ-jkq44/edit?tab=t.0
+2) Видео https://rutube.ru/video/cbfad97a92c79452884b2518198082ba/?r=a/
